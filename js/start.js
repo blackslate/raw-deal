@@ -10,6 +10,7 @@ var showChoice
 
   var canvas = document.createElement('canvas')
   var context = canvas.getContext('2d');
+  var exit = false
   var back
     , face
 
@@ -23,7 +24,8 @@ var showChoice
       "<p>How much richer would your life be, if you simply took the time to pay attention? Perhaps you'll never know.</p>"
   , desist: // I do not agree, after activating the animation
       "<p>You give up easily, don't you? The first sign of something unusual and you're gone.</p>" +
-      "<p>If you'd stayed, perhaps we could have gained something from each other, but it's your decision.</p>"
+      "<p>If you'd stayed, perhaps we could have gained something from each other, but it's your decision.</p>" +
+      "<p>Take care.</p>"
   , renounce: // I do not agree, after the animation completes
       "<p>You tried. I don't have much hope for you, but at least you tried.</p>" +
       "<p>Choices aren't always black and white. With practice, perhaps you'll discover that there is always another alternative.</p>"
@@ -46,7 +48,11 @@ var showChoice
   }
 
   button.onclick = function viewSummary() {
-    showSection("summary")
+    if (exit) {
+      location.reload()
+    } else {
+      showSection("summary")
+    }
   }
 
   image.onload = function(){
@@ -81,6 +87,13 @@ var showChoice
     div.innerHTML = messages[chosen]
     var keys = Object.keys(messages)
     dealCards(keys.indexOf(chosen))
+
+    switch (chosen) {
+      case "refuse":
+      case "disagree":
+      case "desist":
+        exit = true
+    }
   }
 
   image.src = "img/card.png";
