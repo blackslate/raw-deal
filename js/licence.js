@@ -411,37 +411,43 @@
   // "return"
   
   function disagree(event) {
+    showSection("start")
+
     if (animated === 2) {
-      showSection("renounce")
+      showChoice("renounce")
     } else if (animated) {
-      showSection("desist")
+      showChoice("desist")
     } else if (scrolledToEnd) {
-      showSection("disagree")
+      showChoice("disagree")
     } else {
-      showSection("refuse")
+      showChoice("refuse")
     }
   }
   
   function agree(event) {
+    showSection("start")
+
     if (animated === 2) {
-      showSection("consent")
+      showChoice("consent")
     } else if (animated) {
-      showSection("hasty")
+      showChoice("jostle")
     } else {
-      showSection("agree")
+      showChoice("agree")
     }
   }
 
   function keypress(event) {
+    showSection("start")
+
     if (event.target !== document.body) {
       // Ignore keyboard navigation on buttons
      } else if (event.charCode !== 13) {
       // Ignore keys other than RETURN/ENTER
       
     } else if (animated === 2) {
-      showSection("enter")
+      showChoice("enter")
     } else {
-      showSection("return")
+      showChoice("return")
     }
   }
 

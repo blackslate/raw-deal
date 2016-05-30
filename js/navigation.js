@@ -14,6 +14,8 @@
     } else if (section.classList.contains(active)) {
       return // already active
     }
+
+    document.body.removeAttribute("style")
     
     for (name in sections) {
       section = sections[name]
