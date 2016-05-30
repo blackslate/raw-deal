@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <style>
+    body {
+      /*background-color: #ddd;*/
+    }
+    img {
+      position: absolute;
+      top: 50px;
+      left: 250px;
+      -ms-transform-origin: 50% 100%;
+      -webkit-transform-origin: 50% 100%;
+      transform-origin: 50% 100%;
+   }
+    img:nth-child(1) {
+      -webkit-transform: rotate(-35deg);
+      transform: rotate(-35deg);
+    }
+    img:nth-child(2) {
+      -webkit-transform: rotate(-25deg);
+      transform: rotate(-25deg);
+    }
+    img:nth-child(3) {
+      -webkit-transform: rotate(-15deg);
+      transform: rotate(-15deg);
+    }
+    img:nth-child(4) {
+      -webkit-transform: rotate(-5deg);
+      transform: rotate(-5deg);
+    }
+    img:nth-child(5) {
+      -webkit-transform: rotate(5deg);
+      transform: rotate(5deg);
+    }
+    img:nth-child(6) {
+      -webkit-transform: rotate(15deg);
+      transform: rotate(15deg);
+    }
+    img:nth-child(7) {
+      -webkit-transform: rotate(25deg);
+      transform: rotate(25deg);
+    }
+    img:nth-child(8) {
+      -webkit-transform: rotate(35deg);
+      transform: rotate(35deg);
+    }
+
+    img.chosen {
+      -webkit-transform: rotate(90deg);
+      transform:rotate(90deg);
+      z-index: 1;
+      -webkit-filter: drop-shadow(1px 0px 1px #999);
+      filter: drop-shadow(1px 0px 1px rgb(51,51,51,0.2));
+  </style>  
+
+</head>
+<body>
+
+<img width="233" height="400">
+<img width="233" height="400">
+<img width="233" height="400">
+<img width="233" height="400">
+<img width="233" height="400">
+<img width="233" height="400">
+<img width="233" height="400">
+<img width="233" height="400">
+<!-- 721 x 534 -->
+
+<script>
+;(function () {
+  var images = [].slice.call(document.querySelectorAll("img"))
+  var image = new Image()
+  var white = new Image()
+  white.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQAQMAAAC6caSPAAAAA3NCSVQICAjb4U/gAAAABlBMVEX///////9VfPVsAAAACXBIWXMAAAsSAAALEgHS3X78AAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABZ0RVh0Q3JlYXRpb24gVGltZQAxMC8xNC8xNQkEnNcAAAAqSURBVHic7cExAQAAAMKg9U/tbwagAAAAAAAAAAAAAAAAAAAAAAAAAIA3T7AAATkWl3gAAAAASUVORK5CYII="
+
+  var canvas = document.createElement('canvas')
+  var context = canvas.getContext('2d');
+  var back
+    , face
+
+  white.onload = function () {
+    console.log("white loaded")
+  }
+
+  image.onload = function(){
+    console.log("image loaded")
+    var width = image.width * 2
+    var height = image.height * 2
+    var radius = 30
+    var right = width - radius
+    var bottom = height - radius
+
+    canvas.width = width
+    canvas.height = height
+
+    context.beginPath()
+    context.arc(radius, radius, radius, Math.PI, 1.5*Math.PI, false)
+    context.lineTo(right, 0)
+    context.arc(right, radius, radius, 1.5*Math.PI, 0, false)
+    context.lineTo(width, bottom)
+    context.arc(right, bottom, radius, 0, 0.5*Math.PI, false)
+    context.lineTo(radius, height)
+    context.arc(radius, bottom, radius, 0.5*Math.PI, Math.PI, false)
+    context.clip();
+    context.drawImage(image, 0, 0, width, height);
+
+    back = canvas.toDataURL()
+   
+    context.drawImage(white, 0, 0, width, height);
+    face = canvas.toDataURL()
+
+    dealCards(6)
+  }
+
+  image.src = "img/card.png";
+
+  function dealCards(selected) {
+    var total = images.length
+    var ii
+      , image
+    
+    for (ii = 0; ii < total; ii += 1) {
+      image = images[ii]
+      if (ii === selected) {
+        image.src = face
+        image.classList.add("chosen")
+      } else {
+        image.src = back
+      }
+    }
+  }
+
+ 
+
+})()
+</script>
+
+</body>
+</html>

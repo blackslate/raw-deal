@@ -1,0 +1,118 @@
+body {
+  font-family: Arial;
+  background-color: #000;
+  margin:0;
+  
+}
+body, html {
+  height: 100%;
+}
+p {
+  line-height: 120%;
+}
+main {
+  position: relative;
+  top: 2em;
+  height: calc(100% - 4em);
+  height: 100%;
+  background-color: #ddd;
+}
+section {
+  height: 100%;
+  width: 800px;
+  margin: auto;
+  display: none;
+}
+section:not(#licence) {
+  background: url(../img/bgh.gif);
+  background-size: 100% 100%;
+}
+/*section:before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  z-index: -1;
+  background: url(../img/bg.gif);
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+}*/
+section.active {
+  display: block;
+}
+section#licence{
+  position: relative;
+  /*top: 2em;
+  height: calc(100% - 4em);*/
+}
+section > * {
+  margin-top: 0;
+}
+#licence div{
+  position: relative;
+  width: 90%;
+  max-width: 666px;
+  min-width: 222px;
+  margin:auto;
+  padding: 1em;
+  height: calc(100% - 4em);
+}
+#licence .text{
+  background-color: #fff;
+  height: calc(100% - 5.6em);
+  min-height: 14em;
+  overflow-y:scroll;
+  border: 2px solid #eee;
+  border-style: inset;
+}
+#licence h1{
+  text-align:center;
+  font-size:2.1em;
+}
+#licence .mask {
+  position: absolute;
+  top: 0;
+  padding: 0;
+  max-width: 99999px;
+}
+
+#licence button{
+  font-size:1em;
+  padding:0.5em;
+  border-radius:0.5em;
+  margin-right:1em;
+  margin-left:-0.5em;
+  background-color: #fff;
+  border-width: 2px;
+  cursor: pointer;
+}
+
+#licence button[disabled]{
+  cursor: default;
+  background-color: #ddd;
+  border-width: 1px;
+  padding: calc(0.5em + 1px);
+}
+
+#licence div.zalgo {
+  color: #800;
+  padding: 0;
+  margin: 0;
+}
+.zalgo.compressed p {
+  line-height: 0%;
+  height: 1px;
+  margin: 0;
+  color: #f00;
+}
+.zalgo.faded{
+  opacity: 0.0;
+}
+.hidden {
+  display: none;
+}

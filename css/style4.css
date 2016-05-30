@@ -1,0 +1,86 @@
+body {
+  font-family: Arial;
+  background-color: #ddd;
+  margin:0;
+  
+}
+body, html {
+  height: 100%;
+}
+p {
+  line-height: 120%;
+}
+main {
+  position: relative;
+  top: 2em;
+  height: calc(100% - 4em);
+}
+#licence div{
+  position: relative;
+  width: 90%;
+  max-width: 666px;
+  min-width: 222px;
+  margin:auto;
+  padding: 1em;
+}
+section {
+  height: 100%;
+  display: none;
+}
+section.active {
+  display: block;
+}
+#licence .text{
+  background-color: #fff;
+  height: calc(100% - 5.6em);
+  min-height: 14em;
+  overflow-y:scroll;
+  border: 2px solid #eee;
+  border-style: inset;
+}
+#licence h1{
+  text-align:center;
+  font-size:2.1em;
+}
+#licence .mask {
+  position: absolute;
+  top: 0;
+  padding: 0;
+  max-width: 99999px;
+}
+
+#licence button{
+  font-size:1em;
+  padding:0.5em;
+  border-radius:0.5em;
+  margin-right:1em;
+  margin-left:-0.5em;
+  background-color: #fff;
+  border-width: 2px;
+  cursor: pointer;
+}
+
+#licence button[disabled]{
+  cursor: default;
+  background-color: #ddd;
+  border-width: 1px;
+  padding: calc(0.5em + 1px);
+}
+
+#licence div.zalgo {
+  color: #800;
+  padding: 0;
+  margin: 0;
+}
+.zalgo.compressed p {
+  line-height: 0%;
+  height: 1px;
+  margin: 0;
+  color: #f00;
+}
+.zalgo.faded p {
+  opacity: 0.0;
+}
+.hidden {
+  display: none;
+}
