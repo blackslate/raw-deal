@@ -1,0 +1,31 @@
+Ed Cooke uses
+  Actor
+  Action
+  Object
+  Space
+  Story
+
+  7 categories
+    KQ    couples
+    J     religious
+    10-9  power
+    8 - 7 physical
+    6 - 5 controversial
+    4 - 3 movie star
+    2 - A sport
+  4 personality types
+    Diamonds—rich people
+    Hearts—people you love
+    Clubs—tough or crazy people
+    Spades—amusing or absurd people
+
+I use 
+  Major system
+  Initial and final consonants
+  Words
+
+
+Need to:
+  Associate card with image
+            image with card
+  Understand system

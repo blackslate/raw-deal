@@ -1,0 +1,24 @@
+
+♠ ♥ ♦ ♣
+♤ ♡ ♢ ♧
+
+https://en.wikipedia.org/wiki/Playing_cards_in_Unicode
+
+Create cards from Unicode characters and SVG files
+  Combine all SVG facecards into one file, then clip the appropriate image from the file
+  * Card back
+    * Square image
+    * Border
+    * Clipping path
+  * Suit and number
+  * Suit and number upside down
+  * Big ace
+  * Other numbers, spaced appropriately
+    (some upside down)
+  * Border for face card
+  * SVG image for face card
+    * Colour SVG image according to the suit
+    * Choose image1 or image2 according to the suit
+
+Create transition or method to flip a card (while at an angle)
+Create method to remove card from fan, increase zIndex, and put it back in front of other cards.
