@@ -1,5 +1,8 @@
 /*
 REQUIRES SVG images named J1, J2, Q1, Q2, K1, K2, and bg.gif
+Image sizes and glyph positions are hard coded.
+No border for face cards
+Face cards for hearts and diamonds are black
  */
 
 var createCard
@@ -76,8 +79,7 @@ var createCard
         canvas.width = dimensions.width
         canvas.height = dimensions.height
 
-        createCard("spades", 9, 0)
-        createCard("clubs", 10, 1)
+        start()
       }
     }
 
@@ -311,8 +313,20 @@ var createCard
     cardImages[index].src = canvas.toDataURL()
   }
 
+  function start() {
+    createCard("back", 0, 0)
+    for (var ii = 1; ii < 14; ii += 1) {
+      createCard(randomArrayItem(Object.keys(suits)), ii, ii)
+    }
+  }
+
+
   // UTILITIES //
   function isNumber(number) {
     return !isNaN(parseFloat(number)) && isFinite(number);
+  }
+
+  function randomArrayItem(array) {
+    return array[Math.floor(Math.random() * array.length)]
   }
 })()
