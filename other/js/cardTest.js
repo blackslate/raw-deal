@@ -40,7 +40,6 @@ var createCard
   , height: 600
   }
 
-
   ;(function preloadFacecards(){
     var total = faceNames.length
     var regex = new RegExp("\/(\\w+)(\\.gif|\\" + ".svg)")
@@ -145,6 +144,52 @@ var createCard
       context.strokeStyle = cardColours.black
       context.stroke()
     }
+      
+    function createFront() {
+      colour = 1 + (["spades", "clubs"].indexOf(suit) || 1) // 0 | 2
+      colour = [cardColours.red, 0, cardColours.black][colour]
+      suit = suits[suit]
+
+      createShape()    
+      context.closePath()
+      context.fillStyle = cardColours.white
+      context.fill()
+
+      switch (number) {
+        case 1:
+          number = "A"
+          createAce()
+        break
+
+        case 11:
+        case 12:
+        case 13:
+          number = "JQK".charAt(number - 11)
+          createFace()
+        break
+
+        default:
+          number = "" + number
+          createPips()
+      }
+    }
+
+    function createCorners() {
+      context.fillStyle = colour
+      context.textAlign = "center"
+      context.font = "48px serif"
+      context.fillText(suit, 40, 120)
+      context.font = "64px serif"
+      context.fillText(number, 40, 72)
+
+      context.save();
+      context.translate(350, 600)
+      context.rotate(-Math.PI)    
+      context.fillText(number, 40, 72)
+      context.font = "48px serif"
+      context.fillText(suit, 40, 120)
+      context.restore()
+    }
 
     function createAce() {
       createCorners()
@@ -201,13 +246,6 @@ var createCard
                           : false
       }
 
-      // var ii   
-      // for (ii = 0; ii < row.length; ii += 1) {
-      //   for (jj = 0; jj < col.length; jj += 1) {
-      //     context.fillText(suit, col[jj], row[ii])
-      //   }
-      // }
-
       drawPips()
       flip(col, row)
 
@@ -250,6 +288,10 @@ var createCard
 
     function createFace() {
       var version = 1
+      var left = 70
+      var top = 100
+      var width = dimensions.width - (left * 2)
+      var height = dimensions.height - (top * 2)
       var image
 
       createCorners()
@@ -260,54 +302,9 @@ var createCard
       }
       
       image = faceImages[number + version]
-      context.filter = "sepia(100%) opacity(50%)"
-      context.drawImage(image, 75, 100, 210, 400)
-    }
-      
-    function createFront() {
-      colour = 1 + (["spades", "clubs"].indexOf(suit) || 1) // 0 | 2
-      colour = [cardColours.red, 0, cardColours.black][colour]
-      suit = suits[suit]
-
-      createShape()    
-      context.closePath()
-      context.fillStyle = cardColours.white
-      context.fill()
-
-      switch (number) {
-        case 1:
-          number = "A"
-          createAce()
-        break
-
-        case 11:
-        case 12:
-        case 13:
-          number = "JQK".charAt(number - 11)
-          createFace()
-        break
-
-        default:
-          number = "" + number
-          createPips()
-      }
-    }
-
-    function createCorners() {
       context.fillStyle = colour
-      context.textAlign = "center"
-      context.font = "48px serif"
-      context.fillText(suit, 40, 120)
-      context.font = "64px serif"
-      context.fillText(number, 40, 72)
-
-      context.save();
-      context.translate(350, 600)
-      context.rotate(-Math.PI)    
-      context.fillText(number, 40, 72)
-      context.font = "48px serif"
-      context.fillText(suit, 40, 120)
-      context.restore()
+      context.fillRect(left, top, width, height)
+      context.drawImage(image, left, top, width, height)
     }
     
     cardImages[index].src = canvas.toDataURL()
