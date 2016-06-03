@@ -1,0 +1,24 @@
+You interact with the EULA. Terms become increasingly ambiguous as you scroll down, and increasingly small print. Zalgo interrupts you and encourages you to choose neither alternative.
+
+You take your pick or your evasive action.
+
+The Experimenter welcomes you, and "reminds" you that you have been working on an activity to improve your memory. Zalgo interrupts to warn that the images are not innocent
+
+Welcome back! I'm Dr Watts ...
+You don't remember me? No matter.
+We've been working on mental imagery together. You know the procedure. Shall we continue?
+
+  A card 1-5 ♡, 1♤ 1♢ 1♧ is shown, together with four images.
+  There is a word beneath each image. As you roll over the word or the image, they are highlighted and the word is spoken in text-to-speech.
+
+  You have 1 chance in 4 to guess right, then 1 chance in 3 = 0.75 * 0.66 to guess wrong both times = 0.5 of getting it right on the 2nd attempt, 0.25 chance of getting wrong 3 times.
+
+  0.25 right first time
+  0.50 right second time
+  0.75 right third time
+  1.00 right fourth time
+
+That's OK. Take your time. Find the connection in your memory.
+You see? You remember.
+    
+    You're doing no better than chance. It's a lie. You've never done this before, have you?
