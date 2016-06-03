@@ -40,7 +40,7 @@ var createCard
 
   ;(function preloadFacecards(){
     var total = faceNames.length
-    var regex = new RegExp("\/(\\w+)(\\.gif|\\" + ".svg)")
+    var regex = new RegExp("\\/(\\w+)(\\.gif|\\" + type + ")")
     var timeout = setTimeout(downloadTimeout, 5000)
     var ii
       , image

@@ -9,7 +9,7 @@ var createCard
 
 ;(function () {
   var cardImages = document.querySelectorAll("img")
-  var path = "../img/"
+  var path = "../web/img/"
   var type = ".svg"
   var faceImages = {
     J1: 0
