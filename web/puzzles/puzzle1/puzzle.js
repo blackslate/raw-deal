@@ -35,34 +35,30 @@
     var cardback = document.querySelector("img.back")
     var cardface = document.querySelector("img.face")
     var overlay = document.querySelector("img.overlay")
-    var answers  = document.querySelector(".answers")
+    var progress = document.querySelector(".progress")
+    var answers = document.querySelector(".answers")
     var answerDivs = [].slice.call(answers.querySelectorAll("div"))
-     var suits = ["spades", /*"hearts",*/ "diamonds", "clubs"]
+    var suits = ["spades", "hearts", "diamonds", "clubs"]
     var numbers = [2, 3, 4, 5]
     var path = "img/images/"
     var remaining = 2
+    var totalCues = 8
     var distractors = []
     var imageLUT = {}
+    var attempts = [1,1,1,1,1, 1,1,1,1,1]
+    var unseenImages = []
+    var attemptCount = 20
+    var allottedTime = 2500 // milliseconds
+    var scoreToUnlock = 80
     var imageMap
       , imageNames
       , card
-      , error
+      , startTime
 
     $.getJSON(path + "names.json",  function (data) {
       imageMap = data
       start()
     })
-
-    function start(event) {
-      if (!(--remaining)) {
-        imageNames = Object.keys(imageLUT)
-        newCard()
-        answers.onmouseup = answers.ontouchend = answer
-
-        // var event = getTransitionEvent();
-        // event && overlay.addEventListener(event, newCard)
-      }
-    }
 
     preloadImages(
       path
@@ -114,6 +110,13 @@
         }
       }
     }
+
+    function start(event) {
+      if (!(--remaining)) {
+        imageNames = Object.keys(imageLUT)
+        newCard()
+      }
+    }
   
     function newCard(){
       var aces   = Math.random() < 0.5
@@ -123,13 +126,15 @@
       var number = aces
                  ? 1
                  : randomItemFromArray(numbers, 1)
-      card = suit.charAt(0).toUpperCase() + number
-      error = 0
- 
+
       overlay.classList.remove("fadeIn")
+      cardface.src = createCard({suit: suit, number: number}).src
+      card = suit.charAt(0).toUpperCase() + number
+      addItemToArray(card, unseenImages)
       chooseDistractors()
 
-      cardface.src = createCard({suit: suit, number: number}).src
+      answers.onmouseup = answers.ontouchend = answer
+      startTime = + new Date()
 
       function chooseDistractors() {
         var total = 4
@@ -162,23 +167,65 @@
                  ? event.target
                  : event.target.parentNode
       var index = answerDivs.indexOf(target)
-      
+     
       if (distractors[index] === card) {
         overlay.src = target.querySelector("img").src
+        updateScore(1)
         fadeInAnswer()
+
       } else if (!target.classList.contains("disabled")) {
-        target.classList.add("disabled")
-        error += 1
+        target.classList.add("disabled")       
+        updateScore(0)
+      }
+
+      function updateScore(result) {
+        var correct
+          , worst
+        var elapsed = Math.max(allottedTime, + new Date() - startTime)
+        result = result * allottedTime / elapsed
+
+        attempts.push(result)
+
+        if (attempts.length > attemptCount) {
+          // Find lowest score out of 10 earliest scores <HARD-CODED>
+          worst = Math.min.apply(null, attempts.slice(0, 10))
+          worst = attempts.indexOf(worst)
+          attempts.splice(worst, 1)
+        }
+
+        correct = attempts.reduce(function (previous, current) {
+          return previous + current
+        }, 0)
+
+        correct = Math.min(100, (correct / attemptCount) * 100)
+        progress.style.width = correct + "%"
+
+        console.log(correct, unseenImages.length)
+
+        if (unseenImages.length === totalCues) {
+          if (correct === 100) {
+            levelComplete()
+          } else if (scoreToUnlock && correct > scoreToUnlock) {
+            unlockNextLevel()
+          }
+        }
       }
 
       function fadeInAnswer() {
+        answers.onmouseup = answers.ontouchend = null
         overlay.classList.add("fadeIn")
         setTimeout(newCard, 1500)
       }
     }
+
+    function levelComplete() {
+      puzzle.completed(puzzle.hash)
+    }
     
-    
-    puzzle.completed(puzzle.hash)
+    function unlockNextLevel() {
+      scoreToUnlock = 0
+      alert ("TO DO: unlock next level")
+    }
 
     // UTILITIES //
     function randomItemFromArray(array, dontRepeat) {
@@ -196,21 +243,10 @@
       return item
     }
 
-    function getTransitionEvent(){
-      var transition
-      var element = document.createElement('fakeelement')
-      var transitions = {
-        'transition':'transitionend',
-        'OTransition':'oTransitionEnd',
-        'MozTransition':'transitionend',
-        'WebkitTransition':'webkitTransitionEnd'
-      }
-
-      for(transition in transitions){
-        if( element.style[transition] !== undefined ){
-          return transitions[transition]
-        }
-      }
+    function addItemToArray(item, array){
+      if (array.indexOf(item) < 0) {
+        array.push(item)
+      }    
     }
   }
 

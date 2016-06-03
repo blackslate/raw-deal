@@ -22,9 +22,17 @@ div.cards img.fadeIn {
   opacity: 0.9;
 }
 
-div.answers {
+div.progress {
   position: absolute;
   bottom: 0;
+  width: 50%;
+  height: 1vmin;
+  background-color: #900;
+}
+
+div.answers {
+  position: absolute;
+  bottom: 1vmin;
 }
 
 div.answers div{

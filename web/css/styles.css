@@ -50,6 +50,10 @@ nav li {
 padding: 8px 0;
 }
 
+nav a {
+  text-decoration: none;
+}
+
 nav a img {
 -webkit-filter: none;
 -moz-filter: none;
@@ -59,15 +63,42 @@ position: relative;
 width: 64px;
 }
 
+/* Use progress arc */
 nav a.started img{
--webkit-filter: drop-shadow(0px 0px 1px #fff);
--moz-filter: drop-shadow(0px 0px 1px #fff);
--ms-filter: drop-shadow(0px 0px 1px #fff);
--o-filter: drop-shadow(0px 0px 1px #fff);
-filter: drop-shadow(0px 0px 1px #fff);
+-webkit-filter: drop-shadow(0px 0px 3px #fff);
+-moz-filter: drop-shadow(0px 0px 3px #fff);
+-ms-filter: drop-shadow(0px 0px 3px #fff);
+-o-filter: drop-shadow(0px 0px 3px #fff);
+filter: drop-shadow(0px 0px 3px #fff);
 }
 
-nav a.todo img{
+nav a.locked{
+  /* May not work on Internet Explorer 
+     http://stackoverflow.com/a/10276157/1927589
+  */
+  pointer-events: none;
+}
+nav a.locked img:first-child{
+opacity: 0.5;
+left: 10px;
+}
+nav a:not(.locked) img:nth-child(2){
+display: none;
+}
+nav a.locked img:nth-child(2){
+width: auto;
+left: -6px;
+}
+
+nav a.archived img{
+-webkit-filter: drop-shadow(0px 0px 8px #000);
+-moz-filter: drop-shadow(0px 0px 8px #000);
+-ms-filter: drop-shadow(0px 0px 8px #000);
+-o-filter: drop-shadow(0px 0px 8px #000);
+filter: drop-shadow(0px 0px 8px #000);
+}
+
+nav a.active img{
 -webkit-filter: drop-shadow(0px 0px 8px #fff);
 -moz-filter: drop-shadow(0px 0px 8px #fff);
 -ms-filter: drop-shadow(0px 0px 8px #fff);

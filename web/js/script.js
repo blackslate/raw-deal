@@ -1,6 +1,13 @@
 ;(function puzzleManager(window){
   var STORAGE_NAME = "goMap"
-  var CLASSES = { started: "started", todo: "todo" }
+  var STATUS = { 
+    locked: "locked"
+  , active: "active"
+  , unlocked: "unlocked"
+  , started: "started"
+  , completed: "completed"
+  , archived: "archived" // may be synonym for completed
+  }
 
   document.querySelector("nav").addEventListener(
     "mouseup"
@@ -55,9 +62,9 @@
     var link
 
     if (isIPhone) {
-      disabled.push("#simple")
+      disabled.push("#notOnIPhone") // customize
     } else if (isIE) {
-      disabled.push("#dot")
+      disabled.push("#notOnIE") // customize
     }
 
     for (var ii in disabled) {
@@ -74,26 +81,23 @@
       return
     }
 
-    // { button: 0, dials: 1 } // started = 0, done = 1
+    // { button: 0, dials: 1 } // active = 0, done = 1
     var hash
       , status
 
     links.forEach(function checkStatus(link) {
-      hash = getHash(link)
-      status = playedMap[hash] // undefined | 0 | 1
+      hash = getHashFrom(link)
+      status = playedMap[hash] // undefined | STATUS.xxxx
       showStatus(link, status)
     })
   })()
 
   function showStatus(link, status) {
-    if (isNaN (status)) {
-        link.classList.add(CLASSES.todo)
-    } else if (status) {
-      link.classList.remove(CLASSES.todo)
-      link.classList.remove(CLASSES.started)
+    if (!status) {
+        link.className = STATUS.locked
+
     } else {
-      link.classList.remove(CLASSES.todo)
-      link.classList.add(CLASSES.started)
+      link.className = status
     }
   }
 
@@ -113,22 +117,23 @@
   }
 
   // Load the chosen game
-  function showGame(event) {
-    link = event.target // becomes <a> element or undefined
+  function showGame(event, override) {
+    link = getLink(event, override)
+    // becomes <a> element or undefined
+    if (!link) {
+      // The click was on a nav sub-element above the <a> element, or 
+      // on a locked link
+      return
+    }
 
     /**
      * Extracts "puzzleName" from the link the user clicked, e.g.
      *   "http://example.com/folder/index.html#puzzleName"
      * @return {string or false}
      */
-    var hash = getHash()
+    var hash = getHashFrom(link)
 
-    if (!hash) {
-      // The click was on a nav sub-element above the <a> element
-      return
-    }
-
-    var status = updatePlayedStatus(hash, 0) // 0 | 1
+    var status = updatePlayedStatus(hash, STATUS.active)
     showStatus(link, status)
 
     // CLEAN UP EXISTING PUZZLE IF THERE IS ONE
@@ -202,12 +207,29 @@
     }
   }
 
+  function getLink(event, override) {
+    var element = event.target
+    var notLink = true
+
+    // Find <a> element in hierarchy
+    while (element // not undefined
+        && element.tagName // not body
+        && (notLink = element.tagName.toLowerCase() !== "a") 
+      ) {
+      element = element.parentNode // may now be <a>
+    }
+
+    if (element === document 
+      || (!override && element.classList.contains(STATUS.locked))) {
+      event.preventDefault()
+      element = undefined
+    }
+
+    return element // <a> or undefined
+  }
+
   function updatePlayedStatus(hash, newStatus) {
     var currentStatus = playedMap[hash]
-    if (currentStatus) {
-      // Ignore a newStatus of 0
-      return currentStatus
-    }
 
     if (currentStatus !== newStatus) {
       playedMap[hash] = newStatus
@@ -218,38 +240,18 @@
     return newStatus
   }
 
-  function getHash(externalLink) {
-    // Uses link from closure, and modifies it
-    var notLink = true
-    var index
-
-    if (externalLink) {
-      link = externalLink
-    }
-
-    // Find <a> element in hierarchy
-    while (link // not undefined
-        && link.tagName // not body
-        && (notLink = link.tagName.toLowerCase() !== "a") // not <a>
-      ) {
-      link = link.parentNode // may now be <a>
-    }
-
-    if (notLink) {
-      hash = false
-    } else {
-      index = link.href.indexOf("#") + 1
-      hash = link.href.substring(index)
-    }
+  function getHashFrom(link) {
+    index = link.href.indexOf("#") + 1
+    hash = link.href.substring(index) 
 
     return hash
   }
 
-  function getLink(hash) {
+  function getLinkFrom(hash) {
     var link
 
     links.every(function showMatchingGame(testLink) {
-      if (hash === getHash(testLink)) {
+      if (hash === getHashFrom(testLink)) {
         link = testLink
         return false
       }
@@ -261,13 +263,12 @@
   }
 
   function puzzleCompleted(hash) {
-    var link = getLink(hash)
-
-    updatePlayedStatus(hash, 1)
-    showStatus(link, 1)
+    var link = getLinkFrom(hash)
+    var status = updatePlayedStatus(hash, STATUS.completed)
+    showStatus(link, status)
   }
 
-  // Lead the game defined by the window.location.hash, if it exists
+  // Load the game defined by the window.location.hash, if it exists
   function openGame(hash) {
     var link
 
@@ -275,14 +276,14 @@
       hash = hash.substring(1)
     }
 
-    link = getLink(hash)
+    link = getLinkFrom(hash)
 
     if (link) {
-      showGame({ target: link })
+      showGame({ target: link }, true ) // even if it is locked
     }
   }
 
-  openGame(window.location.hash)
+  openGame(window.location.hash || "puzzle1")
 })(window)
 
 /**
