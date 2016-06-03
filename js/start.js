@@ -1,19 +1,10 @@
+var allImagesLoaded
 var showChoice
 
 ;(function start(){
   var images = [].slice.call(document.querySelectorAll("#start img"))
   var div = document.querySelector("#start div")
   var button = document.getElementById("continue")
-  var image = new Image()
-  var white = new Image()
-  white.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQAQMAAAC6caSPAAAAA3NCSVQICAjb4U/gAAAABlBMVEX///////9VfPVsAAAACXBIWXMAAAsSAAALEgHS3X78AAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABZ0RVh0Q3JlYXRpb24gVGltZQAxMC8xNC8xNQkEnNcAAAAqSURBVHic7cExAQAAAMKg9U/tbwagAAAAAAAAAAAAAAAAAAAAAAAAAIA3T7AAATkWl3gAAAAASUVORK5CYII="
-
-  var canvas = document.createElement('canvas')
-  var context = canvas.getContext('2d');
-  var exit = false
-  var back
-    , face
-
   var messages = {
     refuse: // I do not agree, without even scrolling 
       "<p>You don't even want to try.</p>" +
@@ -46,6 +37,9 @@ var showChoice
   , return: // Enter or Return, without activating the animation
       "<p>You took a shortcut. You've been here before, haven't you? Or was that just a lucky move?</p>"
   }
+  var exit = false
+  var back
+    , blank
 
   button.onclick = function viewSummary() {
     if (exit) {
@@ -55,32 +49,9 @@ var showChoice
     }
   }
 
-  image.onload = function(){
-    console.log("image loaded")
-    var width = image.width * 2
-    var height = image.height * 2
-    var radius = 30
-    var right = width - radius
-    var bottom = height - radius
-
-    canvas.width = width
-    canvas.height = height
-
-    context.beginPath()
-    context.arc(radius, radius, radius, Math.PI, 1.5*Math.PI, false)
-    context.lineTo(right, 0)
-    context.arc(right, radius, radius, 1.5*Math.PI, 0, false)
-    context.lineTo(width, bottom)
-    context.arc(right, bottom, radius, 0, 0.5*Math.PI, false)
-    context.lineTo(radius, height)
-    context.arc(radius, bottom, radius, 0.5*Math.PI, Math.PI, false)
-    context.clip();
-    context.drawImage(image, 0, 0, width, height);
-
-    back = canvas.toDataURL()
-   
-    context.drawImage(white, 0, 0, width, height);
-    face = canvas.toDataURL()
+  allImagesLoaded = function allImagesLoaded() {
+    back = createCard()
+    blank = createCard({suit: "blank"})
   }
 
   showChoice = function showChoice(chosen) {
@@ -96,8 +67,6 @@ var showChoice
     }
   }
 
-  image.src = "img/card.png";
-
   function dealCards(selected) {
     var total = images.length
     var ii
@@ -106,10 +75,10 @@ var showChoice
     for (ii = 0; ii < total; ii += 1) {
       image = images[ii]
       if (ii === selected) {
-        image.src = face
+        image.src = blank.src
         image.classList.add("chosen")
       } else {
-        image.src = back
+        image.src = back.src
       }
     }
   }
