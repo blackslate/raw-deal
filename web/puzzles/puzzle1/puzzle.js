@@ -34,9 +34,10 @@
 
     var cardback = document.querySelector("img.back")
     var cardface = document.querySelector("img.face")
+    var overlay = document.querySelector("img.overlay")
     var answers  = document.querySelector(".answers")
     var answerDivs = [].slice.call(answers.querySelectorAll("div"))
-    var suits = ["spades", /*"hearts",*/ "diamonds", "clubs"]
+     var suits = ["spades", /*"hearts",*/ "diamonds", "clubs"]
     var numbers = [2, 3, 4, 5]
     var path = "img/images/"
     var remaining = 2
@@ -57,6 +58,9 @@
         imageNames = Object.keys(imageLUT)
         newCard()
         answers.onmouseup = answers.ontouchend = answer
+
+        // var event = getTransitionEvent();
+        // event && overlay.addEventListener(event, newCard)
       }
     }
 
@@ -122,6 +126,7 @@
       card = suit.charAt(0).toUpperCase() + number
       error = 0
  
+      overlay.classList.remove("fadeIn")
       chooseDistractors()
 
       cardface.src = createCard({suit: suit, number: number}).src
@@ -159,12 +164,16 @@
       var index = answerDivs.indexOf(target)
       
       if (distractors[index] === card) {
-        newCard()
-      } else {
-        if (!target.classList.contains("disabled")) {
-          target.classList.add("disabled")
-          error += 1
-        }
+        overlay.src = target.querySelector("img").src
+        fadeInAnswer()
+      } else if (!target.classList.contains("disabled")) {
+        target.classList.add("disabled")
+        error += 1
+      }
+
+      function fadeInAnswer() {
+        overlay.classList.add("fadeIn")
+        setTimeout(newCard, 1500)
       }
     }
     
@@ -185,6 +194,23 @@
       }
 
       return item
+    }
+
+    function getTransitionEvent(){
+      var transition
+      var element = document.createElement('fakeelement')
+      var transitions = {
+        'transition':'transitionend',
+        'OTransition':'oTransitionEnd',
+        'MozTransition':'transitionend',
+        'WebkitTransition':'webkitTransitionEnd'
+      }
+
+      for(transition in transitions){
+        if( element.style[transition] !== undefined ){
+          return transitions[transition]
+        }
+      }
     }
   }
 

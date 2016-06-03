@@ -30,6 +30,7 @@ var createCard
     black: "#000"
   , red: "#800"
   , white: "#fff"
+  , border: "#200"
   }
   var canvas = document.createElement('canvas')
   var context = canvas.getContext('2d');
@@ -156,7 +157,7 @@ var createCard
       createShape()
       context.closePath()
       context.lineWidth = radius / 2
-      context.strokeStyle = cardColours.black
+      context.strokeStyle = cardColours.border
       context.stroke()
     }
 
