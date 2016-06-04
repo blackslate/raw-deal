@@ -1,3 +1,5 @@
+var unlockNext
+
 ;(function puzzleManager(window){
   var STORAGE_NAME = "goMap"
   var STATUS = { 
@@ -38,6 +40,7 @@
            || navigator.appVersion.indexOf('Trident/') > -1)
   // Does this also also detect Android?
   var links = [].slice.call(document.querySelectorAll("nav a"))
+  var locked = []
   var dragStart
   var link
   var playedMap
@@ -87,19 +90,14 @@
 
     links.forEach(function checkStatus(link) {
       hash = getHashFrom(link)
-      status = playedMap[hash] // undefined | STATUS.xxxx
-      showStatus(link, status)
+      status = playedMap[hash] || STATUS.locked
+      link.className = status
+
+      if (status === STATUS.locked) {
+        locked.push(hash)
+      }
     })
   })()
-
-  function showStatus(link, status) {
-    if (!status) {
-        link.className = STATUS.locked
-
-    } else {
-      link.className = status
-    }
-  }
 
   function prepareForDrag(event) {
     dragStart = getClientLoc(event)  
@@ -133,9 +131,8 @@
      */
     var hash = getHashFrom(link)
 
-    var status = updatePlayedStatus(hash, STATUS.active)
-    showStatus(link, status)
-
+    updatePlayedStatus(hash, STATUS.active, link)
+ 
     // CLEAN UP EXISTING PUZZLE IF THERE IS ONE
     if (puzzleObject && puzzleObject.kill) {
       puzzleObject.kill()
@@ -228,14 +225,24 @@
     return element // <a> or undefined
   }
 
-  function updatePlayedStatus(hash, newStatus) {
+  function updatePlayedStatus(hash, newStatus, link) {
     var currentStatus = playedMap[hash]
+    var link = link || getLinkFrom(hash)
+    var index
 
     if (currentStatus !== newStatus) {
       playedMap[hash] = newStatus
     }
 
     localStorage[STORAGE_NAME] = JSON.stringify(playedMap)
+    link.className = newStatus
+
+    if (newStatus !== STATUS.locked) {
+      index = locked.indexOf(hash)
+      if (index > -1) {
+        locked.splice(index, 1)
+      }
+    }
 
     return newStatus
   }
@@ -263,9 +270,12 @@
   }
 
   function puzzleCompleted(hash) {
-    var link = getLinkFrom(hash)
-    var status = updatePlayedStatus(hash, STATUS.completed)
-    showStatus(link, status)
+    updatePlayedStatus(hash, STATUS.completed)
+  }
+
+  unlockNext = function unlockNext() {
+    var hash = locked.shift()
+    updatePlayedStatus(hash, STATUS.unlocked)
   }
 
   // Load the game defined by the window.location.hash, if it exists
