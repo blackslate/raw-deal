@@ -4,9 +4,7 @@ Dimensions of face card SVGs are approximate.
 Image sizes and glyph positions are hard coded.
 */
 
-var createCard
-
-;(function () {
+;(function cardCreator(lx) {
   var path = "img/"
   var type = ".svg"
   var faceImages = {
@@ -25,6 +23,12 @@ var createCard
   , hearts: "♥"
   , diamonds: "♦"
   , clubs: "♣"
+  }
+  var suitLUT = {
+    "S": "spades"
+  , "H": "hearts"
+  , "D": "diamonds"
+  , "C": "clubs"
   }
   var cardColours = {
     black: "#000"
@@ -91,17 +95,29 @@ var createCard
     }
   })()
 
-  createCard = function createCard(map) {
+  /**
+   * [createCard description]
+   * @param  {object} map {suit: <"spades"|"hearts"|"diamonds"|"clubs"
+   *                      ,number: <1 - 13>
+   *                      ,image: HTMLImageElement
+   *                      ,card: <"S1" ... "C13" | "blank">
+   *                      }
+   *                   If no map is given, image will be a card back
+   *                   Use either suit and number, or card.
+   * @return {HTMLImageObject} 
+   */
+  lx.createCard = function createCard(map) {
     // Validate input
     typeof map !== "object" ? map = {} : null
 
-    suit = map.suit
-    number = map.number
-    image = map.image
+    var card = map.card || ""
+    var suit = map.suit || suitLUT[card.charAt(0).toUpperCase()]
+    var number = map.number || parseInt(card.substring(1), 10)
+    var image = map.image
 
-    if (Object.keys(suits).indexOf(suit) < 0 && suit !== "blank") {
-      suit = "back"
-    } else if (isNumber(number)) {
+    if (Object.keys(suits).indexOf(suit) < 0) {
+      suit = (card === "blank") ? suit : "back"
+    } else if (lx.isNumber(number)) {
       number = parseInt(number)
       number = Math.max(1, Math.min(number, 13))
     } else {
@@ -331,9 +347,4 @@ var createCard
 
     return image
   }
-
-  // UTILITIES //
-  function isNumber(number) {
-    return !isNaN(parseFloat(number)) && isFinite(number);
-  }
-})()
+})(lexogram)

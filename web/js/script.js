@@ -1,6 +1,4 @@
-var unlockNext
-
-;(function puzzleManager(window){
+;(function puzzleManager(window, document, lx){
   var STORAGE_NAME = "goMap"
   var STATUS = { 
     locked: "locked"
@@ -24,10 +22,11 @@ var unlockNext
   , checkForDrag
   , false)
 
-  window.puzzle = {
+  var puzzle = lx.puzzle = {
     map: {}
   , hash: ""
   , completed: puzzleCompleted
+  , unlock: unlockNextLevel
   }
 
   var puzzleObject
@@ -41,6 +40,7 @@ var unlockNext
   // Does this also also detect Android?
   var links = [].slice.call(document.querySelectorAll("nav a"))
   var locked = []
+  var levels = []
   var dragStart
   var link
   var playedMap
@@ -90,6 +90,7 @@ var unlockNext
 
     links.forEach(function checkStatus(link) {
       hash = getHashFrom(link)
+      levels.push(hash)
       status = playedMap[hash] || STATUS.locked
       link.className = status
 
@@ -271,11 +272,20 @@ var unlockNext
 
   function puzzleCompleted(hash) {
     updatePlayedStatus(hash, STATUS.completed)
+
+    var index = levels.indexOf(hash) + 1
+    if (index === levels.length) {
+      alert("Game complete")
+    } else {
+      openGame(levels[index])
+    }
   }
 
-  unlockNext = function unlockNext() {
+  function unlockNextLevel() {
     var hash = locked.shift()
-    updatePlayedStatus(hash, STATUS.unlocked)
+    if (hash) {
+      updatePlayedStatus(hash, STATUS.unlocked)
+    }
   }
 
   // Load the game defined by the window.location.hash, if it exists
@@ -294,7 +304,7 @@ var unlockNext
   }
 
   openGame(window.location.hash || "puzzle1")
-})(window)
+})(window, document, lexogram)
 
 /**
  * createSquareArea — workaround for the lack of vmin|vmax support

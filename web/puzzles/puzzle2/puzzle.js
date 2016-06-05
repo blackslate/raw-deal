@@ -1,48 +1,30 @@
-// window.puzzle = {
-//   map: {}
-// , hash: "test"
-// , completed: function () { console.log("Puzzle completed") }
-// }
-
-// setTimeout(function () {
-//   window.puzzle.map.test.initialize()
-// }, 0)
-
-// function getClientLoc(event) {
-//   var clientLoc = {}
-//   if (isNaN(event.clientX)) {          
-//     clientLoc.x = event.targetTouches[0].clientX
-//     clientLoc.y = event.targetTouches[0].clientY
-//   } else {          
-//     clientLoc.x = event.clientX
-//     clientLoc.y = event.clientY
-//   }
-
-//   return clientLoc
-// }
-
-/*********** REMOVE ALL CODE ABOVE THIS LINE IN PRODUCTION **********/
-
-;(function puzzleLoaded(puzzle){
+;(function puzzleLoaded(puzzle, lx){
 
   function Puzzle() {
-    this.name = "Template"
+    this.name = "Twos to Fours"
   }
 
   Puzzle.prototype.initialize = function initialize() {
-    console.log("Puzzle '" + this.name + "' initialized")
-    // Code goes here
-    
-    puzzle.completed(puzzle.hash)
+    var options = {
+      cues: [
+        "S2", "S3", "S4"
+      , "D2", "D3", "D4"
+      , "C2", "C3", "C4"
+      ]     
+      , allottedTime: 3000
+      , scoreMethod: "updateScore"
+    }
+    var game = lx.getInstance("CardMatch", options)
+    game.initialize()
   }
 
   Puzzle.prototype.kill = function kill() {
     // Clean up when puzzle is about to be replaced
   }
 
-  if (typeof puzzle.hash === "string") {
-    if (typeof puzzle.map === "object") {
-      var object = puzzle.map[puzzle.hash] = new Puzzle()
+  if (typeof lx.puzzle.hash === "string") {
+    if (typeof lx.puzzle.map === "object") {
+      var object = lx.puzzle.map[lx.puzzle.hash] = new Puzzle()
     }
   }
-})(window.puzzle) // <HARD-CODED global object>
+})(window.puzzle, lexogram) // <HARD-CODED global object>

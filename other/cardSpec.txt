@@ -29,3 +29,5 @@ Locked: translucid, lock icon
 Unlocked, unplayed: red glow
 Unlocked: progress arc
 Archived: black glow
+
+Each level can unlock a given level, or allow the player to unlock any chosen level.
