@@ -3,12 +3,15 @@
   lx.addConstructor(CardMatch)
  
   function CardMatch(options) {
-    // this.suits = []
-    // this.numbers = []
     this.cues = ["S1", "D11", "H12", "C13"]
     this.repeatAfter = 2
     this.allottedTime = 5000
+    this.scoreMethod = "updateScore"
     this.setOptions(options)
+
+    this.startTime = 0
+    this.attempts = [1,1,1,1,1, 1,1,1,1,1]
+    this.attemptCount = 20
   }
 
   CardMatch.prototype.setOptions = function setOptions(options) {
@@ -38,8 +41,33 @@
     }
   }
 
+  CardMatch.prototype.updateScore = function updateScore(result, showProgress) {
+    var correct
+      , worst
+    var attempts = this.attempts
+    var elapsed = + new Date() - this.startTime
+    var elapsed = Math.max(this.allottedTime, elapsed)
+    result = result * this.allottedTime / elapsed
+
+    attempts.push(result)
+
+    if (attempts.length > this.attemptCount) {
+      // Find lowest score out of 10 earliest scores <HARD-CODED>
+      worst = Math.min.apply(null, attempts.slice(0, 10))
+      worst = attempts.indexOf(worst)
+      attempts.splice(worst, 1)
+    }
+
+    correct = attempts.reduce(function (previous, current) {
+      return previous + current
+    }, 0)
+
+    correct = Math.min(100, (correct / this.attemptCount) * 100)
+    showProgress(correct)
+  }
+
   CardMatch.prototype.initialize = function initialize() {
-    var self = this
+    var that = this
     var cardback = document.querySelector("img.back")
     var cardface = document.querySelector("img.face")
     var overlay = document.querySelector("img.overlay")
@@ -50,14 +78,11 @@
     var remaining = 2
     var distractors = []
     var imageLUT = {}
-    var attempts = [1,1,1,1,1, 1,1,1,1,1]
     var unseenImages = []
-    var attemptCount = 20
     var scoreToUnlock = 80
     var imageMap
       , imageNames
       , card
-      , startTime
 
     $.getJSON(path + "names.json",  function (data) {
       imageMap = data
@@ -128,13 +153,13 @@
     function newCard(){
       overlay.classList.remove("fadeIn")
   
-      card = lx.randomItemFromArray(self.cues, self.repeatAfter)
+      card = lx.randomItemFromArray(that.cues, that.repeatAfter)
       cardface.src = lx.createCard({card: card}).src
       lx.addItemToArray(card, unseenImages)
       chooseDistractors()
 
       answers.onmouseup = answers.ontouchend = answer
-      startTime = + new Date()
+      that.startTime = + new Date()
 
       function chooseDistractors() {
         var total = answerDivs.length
@@ -170,41 +195,44 @@
      
       if (distractors[index] === card) {
         overlay.src = target.querySelector("img").src
-        updateScore(1)
+        that[that.scoreMethod](1, showProgress)
         fadeInAnswer()
 
       } else if (!target.classList.contains("disabled")) {
         target.classList.add("disabled")       
-        updateScore(0)
+        that[that.scoreMethod](0, showProgress)
       }
     }
 
+    // function updateScore(result) {
+    //   var correct
+    //     , worst
+    //   var elapsed = Math.max(that.allottedTime, + new Date() - startTime)
+    //   result = result * that.allottedTime / elapsed
 
-    function updateScore(result) {
-      var correct
-        , worst
-      var elapsed = Math.max(self.allottedTime, + new Date() - startTime)
-      result = result * self.allottedTime / elapsed
+    //   attempts.push(result)
 
-      attempts.push(result)
+    //   if (attempts.length > attemptCount) {
+    //     // Find lowest score out of 10 earliest scores <HARD-CODED>
+    //     worst = Math.min.apply(null, attempts.slice(0, 10))
+    //     worst = attempts.indexOf(worst)
+    //     attempts.splice(worst, 1)
+    //   }
 
-      if (attempts.length > attemptCount) {
-        // Find lowest score out of 10 earliest scores <HARD-CODED>
-        worst = Math.min.apply(null, attempts.slice(0, 10))
-        worst = attempts.indexOf(worst)
-        attempts.splice(worst, 1)
-      }
+    //   correct = attempts.reduce(function (previous, current) {
+    //     return previous + current
+    //   }, 0)
 
-      correct = attempts.reduce(function (previous, current) {
-        return previous + current
-      }, 0)
+    //   correct = Math.min(100, (correct / attemptCount) * 100)
+    //   showProgress(correct)
+    // }
 
-      correct = Math.min(100, (correct / attemptCount) * 100)
+    function showProgress(correct) {
       progress.style.width = correct + "%"
 
       console.log(correct, unseenImages.length)
 
-      if (unseenImages.length === self.cues.length) {
+      if (unseenImages.length === that.cues.length) {
         if (correct === 100) {
           levelComplete()
         } else if (scoreToUnlock && correct > scoreToUnlock) {
@@ -228,4 +256,6 @@
       lx.puzzle.unlock()
     }
   }
+
+  
 })(lexogram) // <HARD-CODED global object>

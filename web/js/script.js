@@ -9,19 +9,6 @@
   , archived: "archived" // may be synonym for completed
   }
 
-  document.querySelector("nav").addEventListener(
-    "mouseup"
-  , showGame
-  , false)
-  document.querySelector("nav").addEventListener(
-    "touchstart"
-  , prepareForDrag
-  , false)
-  document.querySelector("nav").addEventListener(
-    "touchend"
-  , checkForDrag
-  , false)
-
   var puzzle = lx.puzzle = {
     map: {}
   , hash: ""
@@ -45,20 +32,38 @@
   var link
   var playedMap
 
-  try {
-    playedMap = JSON.parse(localStorage[STORAGE_NAME])
-  } catch(error) {}
 
-  if (!playedMap) {
-    playedMap = {}
-  }
+  ;(function treatEvents(){
+    document.querySelector("nav").addEventListener(
+      "mouseup"
+    , showGame
+    , false)
+    document.querySelector("nav").addEventListener(
+      "touchstart"
+    , prepareForDrag
+    , false)
+    document.querySelector("nav").addEventListener(
+      "touchend"
+    , checkForDrag
+    , false)
 
-  // Prevent the user from moving and resizing by mistake on a mobile
-  $main.on("touchstart", function(event) {
-    event.preventDefault
-      ? event.preventDefault()
-      : (event.returnValue = false)
-  })
+    // Prevent the user from moving and resizing by mistake on a mobile
+    $main.on("touchstart", function(event) {
+      event.preventDefault
+        ? event.preventDefault()
+        : (event.returnValue = false)
+    })
+  })()
+
+  ;(function initializeMap(){
+    try {
+      playedMap = JSON.parse(localStorage[STORAGE_NAME])
+    } catch(error) {}
+
+    if (!playedMap) {
+      playedMap = {}
+    }
+  })()
 
   ;(function disableByPlatform(){
     var disabled = []
@@ -100,6 +105,26 @@
     })
   })()
 
+  // Public methods
+  function unlockNextLevel() {
+    var hash = locked.shift()
+    if (hash) {
+      updatePlayedStatus(hash, STATUS.unlocked)
+    }
+  }
+
+  function puzzleCompleted(hash) {
+    updatePlayedStatus(hash, STATUS.completed)
+
+    var index = levels.indexOf(hash) + 1
+    if (index === levels.length) {
+      alert("Game complete")
+    } else {
+      openGame(levels[index])
+    }
+  }
+
+  // Event methods
   function prepareForDrag(event) {
     dragStart = getClientLoc(event)  
   }
@@ -268,24 +293,6 @@
     })
 
     return link
-  }
-
-  function puzzleCompleted(hash) {
-    updatePlayedStatus(hash, STATUS.completed)
-
-    var index = levels.indexOf(hash) + 1
-    if (index === levels.length) {
-      alert("Game complete")
-    } else {
-      openGame(levels[index])
-    }
-  }
-
-  function unlockNextLevel() {
-    var hash = locked.shift()
-    if (hash) {
-      updatePlayedStatus(hash, STATUS.unlocked)
-    }
   }
 
   // Load the game defined by the window.location.hash, if it exists

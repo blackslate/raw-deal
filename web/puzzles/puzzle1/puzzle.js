@@ -12,6 +12,7 @@
       , "D1"
       , "C1"
       ]
+      , scoreMethod: "updateScore"
     }
     var game = lx.getInstance("CardMatch", options)
     game.initialize()
