@@ -11,8 +11,8 @@
       , "D2", "D3", "D4"
       , "C2", "C3", "C4"
       ]     
-      , allottedTime: 3000
-      , scoreMethod: "updateScore"
+    , allottedTime: 3000
+    , scoreMethod: "updateScore"
     }
     var game = lx.getInstance("CardMatch", options)
     game.initialize()

@@ -157,6 +157,18 @@
       return !isNaN(parseFloat(number)) && isFinite(number);
     }
 
+  , randomizeArray: function knuth (array) {
+      var current = array.length
+        , swap
+        , random
+
+      while (current) {
+        random = Math.floor(Math.random() * current--);
+        swap = array[current];
+        array[current] = array[random];
+        array[random] = swap;
+      }
+    }
 
   , randomItemFromArray: function randomItemFromArray(
       array, dontRepeat) {
@@ -177,7 +189,10 @@
   , addItemToArray: function addItemToArray(item, array){
       if (array.indexOf(item) < 0) {
         array.push(item)
-      }    
+        return true
+      }
+
+      return false
     }
   }
   
