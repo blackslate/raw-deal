@@ -25,7 +25,7 @@ div.cards img.fadeIn {
 div.progress {
   position: absolute;
   bottom: 0;
-  width: 50%;
+  width: 0%;
   height: 1vmin;
   background-color: #900;
 }

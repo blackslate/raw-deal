@@ -24,7 +24,7 @@ Game 2:
 Game 3:
   Add new card each time score for all cards is significantly better than random.
   Use all suits and all numbers, but only 17 of them (17 are already known)
-  Focus on cards with lowest scores
+  * Focus on cards with lowest scores
 
 Game 4:
   Speak and show word with image: choose card (34 known cards)
@@ -32,9 +32,31 @@ Game 4:
 Game 5:
   Game 4 with 18 unfamiliar cards
 
+Game 2a:
+  Array of 4 images; draw cards from pack to place them. All of same suit or all of same number. Zalgo tells a story for each of the 24 permutations.
+
+Game 2b:
+  As 2a, but all images disappear when first card is turned
+
 Game 6:
-  Use unfamiliar images with best known words
+  As 2b, but with Zalgo telling only a few starter stories, then leaving you to continue
 
+Black box:
+  Four boxes with different designs (since we can't use colours)
+  Add an image to the given box
+  What images are in the given box?
+  Where is a given image?
 
+  Variant 1:
+    Use words instead of images
+
+  Variant 2:
+    Use cards instead of images
+
+IAT:
+  Image is black or red
+  Image is odd or even
+  Image is face card (major) or pips (2-10)
+  Same with words (might be easier)
 
 Once "duck" is well established, add "dog" as a subliminal image, and find other disruptive images to indicate memories breaking through.
