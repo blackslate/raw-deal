@@ -186,6 +186,12 @@
       return item
     }
 
+  , removeRandomItemFromArray: function removeRandomItemFrom(array) {
+      var index = Math.floor(Math.random()*(array.length))
+      item = array.splice(index, 1)[0]
+      return item
+    }
+
   , addItemToArray: function addItemToArray(item, array){
       if (array.indexOf(item) < 0) {
         array.push(item)

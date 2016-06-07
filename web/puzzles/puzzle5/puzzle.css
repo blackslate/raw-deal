@@ -1,20 +1,20 @@
 div.cards img {
-  width: 30vmin;
+  width: 30%;
   display: inline-block;
-  margin-left: 2vmin;
-  margin-top: 2.5vmin;
+  margin-left: 2%;
+  margin-top: 2.5%;
 }
 
 div.cards img.overlay {
-  margin-bottom: 10.9vmin;
-  height: 30vmin;
+  margin-bottom: 10.9%;
+  height: 30%;
   border: 1px solid #fff;
   box-sizing: border-box;
 }
 
 div.cards img.face {
   position: absolute;
-  margin-left: -30vmin;
+  margin-left: -30%;
 
   opacity: 0;
   -moz-transition: opacity .5s ease-in-out;
@@ -28,10 +28,10 @@ div.cards img.fadeIn {
 
 div.cards p {
   position: absolute;
-  left: 34vmin;
-  top: 1.5vmin;
-  top: 47vmin;
-  width: 30vmin;
+  left: 34%;
+  top: 1.5%;
+  top: 47%;
+  width: 30%;
   text-align: center;
   font-size: 5vmin;
   margin: 0;
@@ -51,13 +51,13 @@ div.progress {
   position: absolute;
   bottom: 0;
   width: 0%;
-  height: 1vmin;
+  height: 1%;
   background-color: #900;
 }
 
 div.answers {
   position: absolute;
-  bottom: 1vmin;
+  bottom: 1%;
 }
 
 div.answers img{

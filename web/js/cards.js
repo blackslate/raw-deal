@@ -6,17 +6,26 @@ Image sizes and glyph positions are hard coded.
 
 ;(function cardCreator(lx) {
   var path = "img/"
-  var type = ".svg"
-  var faceImages = {
-    J1: 0
-  , J2: 0
-  , Q1: 0
-  , Q2: 0
-  , K1: 0
-  , K2: 0
+  var faceSource = {
+    black: "black.png"
+  , red: "red.png"
   , bg: "bg.gif"
   }
-  var faceNames = Object.keys(faceImages)
+  var faceImages = {
+    "S13": { image: "black", rect: [[0,2], [0,3], [1,2], [1,3]] }
+  , "S12": { image: "black", rect: [[0,2], [1,3], [1,2], [2,3]] }
+  , "S11": { image: "black", rect: [[0,2], [2,3], [1,2], [3,3]] }
+  , "C13": { image: "black", rect: [[1,2], [0,3], [2,2], [1,3]] }
+  , "C12": { image: "black", rect: [[1,2], [1,3], [2,2], [2,3]] }
+  , "C11": { image: "black", rect: [[1,2], [2,3], [2,2], [3,3]] }
+  , "H13": { image: "red",   rect: [[0,2], [0,3], [1,2], [1,3]] }
+  , "H12": { image: "red",   rect: [[0,2], [1,3], [1,2], [2,3]] }
+  , "H11": { image: "red",   rect: [[0,2], [2,3], [1,2], [3,3]] }
+  , "D13": { image: "red",   rect: [[1,2], [0,3], [2,2], [1,3]] }
+  , "D12": { image: "red",   rect: [[1,2], [1,3], [2,2], [2,3]] }
+  , "D11": { image: "red",   rect: [[1,2], [2,3], [2,2], [3,3]] }
+  , "bg":  { image: "bg",    rect: [[0,1], [0,1], [1,1], [1,1]] }
+  }
   var notLoaded
   var suits = {
     spades: "♠"
@@ -32,34 +41,30 @@ Image sizes and glyph positions are hard coded.
   }
   var cardColours = {
     black: "#000"
-  , red: "#800"
+  , red: "#800000"
   , white: "#fff"
   , border: "#200"
   }
-  var canvas = document.createElement('canvas')
-  var context = canvas.getContext('2d');
   var dimensions = { 
     width: 350
   , height: 600
   }
+  var canvas = document.createElement('canvas')
+  var context = canvas.getContext('2d');
 
   ;(function preloadFacecards(){
-    var total = faceNames.length
-    var regex = new RegExp("\\/(\\w+)(\\.gif|\\" + type + ")")
+    var regex = new RegExp("\\/(\\w+)(\\.png|\\.gif)")
     var timeout = setTimeout(downloadTimeout, 5000)
-    var ii
+    var key
       , image
-      , name
 
-    notLoaded = total
+    notLoaded = Object.keys(faceSource).length
     
-    for (ii = 0; ii < total; ii += 1) {
+    for (key in faceSource) {
       image = new Image()
       image.onload = checkDownload
       image.onerror = downloadError
-      // generate "name.svg" if no name is given
-      name = faceImages[faceNames[ii]] || (faceNames[ii] + type)
-      image.src = path + name
+      image.src = path + faceSource[key]
     }
 
     function checkDownload(event) {
@@ -69,20 +74,66 @@ Image sizes and glyph positions are hard coded.
       }
 
       name = regex.exec(this.src)[1]
-      faceImages[name] = this
+      faceSource[name] = this
 
       notLoaded -= 1
       if (!notLoaded) {
         clearTimeout(timeout)
         timeout = false
-
-        canvas.width = dimensions.width
+        createCroppedImages()
+        
+        canvas.width = dimensions.width     
         canvas.height = dimensions.height
 
-        if (typeof allImagesLoaded == 'function') { 
-          allImagesLoaded(); 
-        }
+        // if (typeof allImagesLoaded == 'function') { 
+        //   allImagesLoaded(); 
+        // }
       }
+    }
+
+    function createCroppedImages() {
+      var key
+        , data
+        , source
+        , rect
+        , image
+        , left
+        , top
+        , width
+        , height
+        , canvas
+        , context
+
+      for (key in faceImages) {
+        data = faceImages[key]
+        // { image: "black", rect: [[0,2], [0,3], [1,2], [1,3]] }
+        // { image: "red",   rect: [[1,2], [2,3], [2,2], [3,3]] }
+        source = faceSource[data.image]
+
+        rect = data.rect
+        width = source.width
+        height = source.height
+        left = width * rect[0][0] / rect[0][1]
+        width /= rect[2][1]
+        top = height * rect[1][0] / rect[1][1]
+        height /= rect[3][1]
+
+        canvas = document.createElement('canvas')
+        context = canvas.getContext('2d');
+
+        canvas.width = width
+        canvas.height = height
+        context.drawImage(
+          source
+        , left, top, width, height
+        , 0,    0,   width, height
+        )
+        image = new Image()
+        image.src = canvas.toDataURL()
+        faceImages[key] = image
+      }
+
+
     }
 
     function downloadError(event) {
@@ -114,6 +165,10 @@ Image sizes and glyph positions are hard coded.
     var suit = map.suit || suitLUT[card.charAt(0).toUpperCase()]
     var number = map.number || parseInt(card.substring(1), 10)
     var image = map.image
+
+    if (suit) {
+      card = suit.charAt(0).toUpperCase() + number
+    }
 
     if (Object.keys(suits).indexOf(suit) < 0) {
       suit = (card === "blank") ? suit : "back"
@@ -331,16 +386,13 @@ Image sizes and glyph positions are hard coded.
       var image
 
       createCorners()
-      switch (suit) {
-        case "♠":
-        case "♥":
-          version = 2
-      }
       
-      image = faceImages[number + version]
+      console.log(card)
+
+      image = faceImages[card]
       context.fillStyle = colour
       context.fillRect(left, top, width, height)
-      context.drawImage(image, left, top, width, height)
+      context.drawImage(image, left+2, top+2, width-4, height-4)
     }
     
     image.src = canvas.toDataURL()

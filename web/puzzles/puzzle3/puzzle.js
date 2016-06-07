@@ -1,93 +1,43 @@
 ;(function puzzleLoaded(puzzle, lx){
 
   function Puzzle() {
-    this.name = "Random 17"
+    this.name = "Sequence"
   }
 
   Puzzle.prototype.initialize = function initialize() {
-    var STORAGE_NAME = "random17"
-    var cues
-    var initialCount
-    var options
-    var game
-
-    try {
-      cues = JSON.parse(localStorage[STORAGE_NAME])
-    } catch(error) {}
-
-    if (!cues) {
-      cues = getRandom17()
-      localStorage[STORAGE_NAME] = JSON.stringify(cues)
+    var options = {
+      cues: [
+        { sequence: ["S1", "H1", "D1", "C1"]
+        , stories: [
+            "A stranger in a suit and hat fed my dodo to the cat"
+          , ""
+          ]
+        }
+      , { sequence: ["S1", "S2", "S3", "S4"]
+        , stories: [
+            "A suit as bright as the sun attacked a sumo in a sari"
+          , ""
+          ]
+        }
+      , { sequence: ["H4", "H2", "H3", "H1"]
+        , stories: [
+            "A hare on a hen's back pulled a ham out of a hat"
+          , ""
+          ]
+        }
+      , { sequence: ["C4", "H4", "S4", "D4"]
+        , stories: [
+            "A car ran over a hare when a sari got caught in the door"
+          , ""
+          ]
+        }
+      ]
+    , repeatAfter: 0
+    , allottedTime: 4000
+    , scoreMethod: "updateScore"
     }
-
-    initialCount = 8
-    options = {
-      cues: cues.slice(0, initialCount)
-    , extras: cues.slice(initialCount)
-    , allottedTime: 3500
-    , scoreMethod: "addCardWhenReady"
-    }
-    game = lx.getInstance("CardMatch", options)
+    var game = lx.getInstance("Sequence", options)
     game.initialize()
-
-    function getRandom17() {
-      var random17 = []
-      var numbers = [5,6,7, 8,9,10, 11,12,13] // 9 items
-      var suits = ["S", "H", "D", "C"]
-      var duplicate = 0
-      var random
-
-      numbers.push.apply(numbers, numbers) // 18 items
-      random = Math.floor(Math.random() * numbers.length) // 0 - 17
-      numbers.splice(random, 1) // 17 items
-
-      suits.push.apply(suits, suits) // 8 items
-      suits.push.apply(suits, suits) // 16 items
-      random = Math.floor(Math.random() * suits.length) // 0 - 15
-      suits.push(suits[random]) // 17 items
-
-      lx.randomizeArray(suits)
-      lx.randomizeArray(numbers)
-
-      var total = suits.length
-      var ii
-        , jj
-        , added
-        , card
-        , added
-        , suit
-        , number
-      
-      for (ii = 0; ii < total; ii += 1) {
-        card = suits[ii] + numbers[ii]
-        added = lx.addItemToArray(card, random17)
-
-        if (!added) {
-          duplicate += 1
-        }
-      }
-
-      if (duplicate) {
-        // Hack to fill up with first available cards
-        for (ii = 0; ii < numbers.length; ii += 1) {
-          for (jj = 0; jj < suits.length; jj += 1) {
-            card = suits[jj] + numbers[ii]
-
-            added = lx.addItemToArray(card, random17)
-
-            if (added) {
-              duplicate -= 1
-              if (!duplicate) {
-                ii = 9999
-                jj = 9999
-              }
-            }
-          }       
-        }
-      }
-
-      return random17
-    }
   }
 
   Puzzle.prototype.kill = function kill() {

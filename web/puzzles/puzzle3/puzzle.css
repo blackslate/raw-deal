@@ -1,60 +1,45 @@
 div.cards img {
-  width: 30vmin;
-  display: inline-block;
-  margin-left: 2vmin;
-  margin-top: 7.5vmin;
-}
-
-div.cards img.overlay {
   position: absolute;
-  margin-left: -30vmin;
-  margin-top: 18.2vmin;
-  height: 30vmin;
-  opacity: 0;
-  -moz-transition: opacity .5s ease-in-out;
-  -webkit-transition: opacity .5s ease-in-out;
-  transition: opacity .5s ease-in-out;
-  border: 1px solid #fff;
-  box-sizing: border-box;
+  width: 25%;
+  margin-left: 37.5%;
+  margin-top: 2.5%;
 }
 
-div.cards img.fadeIn {
-  opacity: 0.9;
+div.cards img.face {
+  opacity: 0.5;
 }
 
 div.progress {
   position: absolute;
   bottom: 0;
   width: 0%;
-  height: 1vmin;
+  height: 1%;
   background-color: #900;
 }
 
 div.answers {
   position: absolute;
-  bottom: 1vmin;
+  bottom: 1%;
+  height: 42.857%;
 }
 
 div.answers div{
   display:inline-block;
   width:25%;
+  height:100%;
   border: 0.5px solid #fff;
   box-sizing: border-box;
   cursor: pointer;
 }
 
-div.answers div.disabled {
-  opacity: 0.25;
-  cursor: default;
-}
-
-div.answers img {
+div.answers img.image {
   width: 100%;
   border-bottom: 1px solid #222;
 }
 
 div.answers p {
   margin: 0;
+  padding-top: 0.75em;
   font-size: 6vmin;
   text-align: center;
 }

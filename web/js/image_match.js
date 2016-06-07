@@ -7,14 +7,12 @@
     this.repeatAfter = 2
     this.allottedTime = 5000
     this.scoreMethod = "updateScore"
-    //this.extras = []
     this.setOptions(options)
 
     this.startTime = 0
     this.attempts = [1,1,1,1,1, 1,1,1,1,1]
     this.attemptCount = 20
-    //this.useFirstCard = false
-    this.total = this.cues.length // + this.extras.length
+    this.total = this.cues.length
   }
 
   ImageMatch.prototype.setOptions = function setOptions(options) {
@@ -40,10 +38,10 @@
     if (isNaN(option)) {
       option = this.repeatAfter
     }
-    option > 0 ? option < this.cues.length
-                 ? this.repeatAfter = option
-                 : this.repeatAfter = Math.floor(this.cues.length / 2)
-               : null
+    option > -1 ? option < this.cues.length
+                  ? this.repeatAfter = option
+                  : this.repeatAfter = Math.floor(this.cues.length / 2)
+                : null
 
     option = parseInt(options.allottedTime, 10)
     if (isNaN(option)) {
@@ -86,17 +84,6 @@
 
     return correct
   }
-
-  // ImageMatch.prototype.addCardWhenReady = function addCard(result, showProgress) {
-  //   var correct = this.updateScore(result, showProgress)
-  //   var card
-
-  //   if (result && correct > 80 && this.extras.length) {
-  //     card = this.extras.pop()
-  //     this.cues.unshift(card)
-  //     this.useFirstCard = true
-  //   }
-  // }
 
   ImageMatch.prototype.initialize = function initialize() {
     var that = this
@@ -166,7 +153,7 @@
 
     function start(event) {
       if (!(--remaining)) {
-        cardback.src = lx.createCard().src // TODO: change to image
+        cardback.src = lx.createCard().src
         imageNames = Object.keys(imageLUT)
         newCard()
       }
@@ -230,13 +217,11 @@
       correct = correct * seenImages.length / that.total
       progress.style.width = correct + "%"
 
-      //if (seenImages.length === that.total) {
-        if (correct === 100) {
-          levelComplete()
-        } else if (scoreToUnlock && correct > scoreToUnlock) {
-          unlockNextLevel()
-        }
-      //}
+      if (correct === 100) {
+        levelComplete()
+      } else if (scoreToUnlock && correct > scoreToUnlock) {
+        unlockNextLevel()
+      }
     }
 
     function fadeInAnswer() {

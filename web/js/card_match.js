@@ -40,10 +40,10 @@
     if (isNaN(option)) {
       option = this.repeatAfter
     }
-    option > 0 ? option < this.cues.length
-                 ? this.repeatAfter = option
-                 : this.repeatAfter = Math.floor(this.cues.length / 2)
-               : null
+    option > -1 ? option < this.cues.length
+                  ? this.repeatAfter = option
+                  : this.repeatAfter = Math.floor(this.cues.length / 2)
+                : null
 
     option = parseInt(options.allottedTime, 10)
     if (isNaN(option)) {

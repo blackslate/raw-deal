@@ -54,9 +54,9 @@ Black box:
     Use cards instead of images
 
 IAT:
-  Image is black or red
-  Image is odd or even
-  Image is face card (major) or pips (2-10)
+  Image is black | red
+  OR Image is odd | even
+  OR Image is face card (major) | pips (2-10)
   Same with words (might be easier)
 
 Once "duck" is well established, add "dog" as a subliminal image, and find other disruptive images to indicate memories breaking through.
