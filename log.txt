@@ -1,3 +1,0 @@
-
-
-- Simplified final width and height in createCroppedImages()
