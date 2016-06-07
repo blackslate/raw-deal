@@ -12,19 +12,19 @@ Image sizes and glyph positions are hard coded.
   , bg: "bg.gif"
   }
   var faceImages = {
-    "S13": { image: "black", rect: [[0,2], [0,3], [1,2], [1,3]] }
-  , "S12": { image: "black", rect: [[0,2], [1,3], [1,2], [2,3]] }
-  , "S11": { image: "black", rect: [[0,2], [2,3], [1,2], [3,3]] }
-  , "C13": { image: "black", rect: [[1,2], [0,3], [2,2], [1,3]] }
-  , "C12": { image: "black", rect: [[1,2], [1,3], [2,2], [2,3]] }
-  , "C11": { image: "black", rect: [[1,2], [2,3], [2,2], [3,3]] }
-  , "H13": { image: "red",   rect: [[0,2], [0,3], [1,2], [1,3]] }
-  , "H12": { image: "red",   rect: [[0,2], [1,3], [1,2], [2,3]] }
-  , "H11": { image: "red",   rect: [[0,2], [2,3], [1,2], [3,3]] }
-  , "D13": { image: "red",   rect: [[1,2], [0,3], [2,2], [1,3]] }
-  , "D12": { image: "red",   rect: [[1,2], [1,3], [2,2], [2,3]] }
-  , "D11": { image: "red",   rect: [[1,2], [2,3], [2,2], [3,3]] }
-  , "bg":  { image: "bg",    rect: [[0,1], [0,1], [1,1], [1,1]] }
+    "S13": { image: "black", rect: [[0,2], [0,3], 2, 3] }
+  , "S12": { image: "black", rect: [[0,2], [1,3], 2, 3] }
+  , "S11": { image: "black", rect: [[0,2], [2,3], 2, 3] }
+  , "C13": { image: "black", rect: [[1,2], [0,3], 2, 3] }
+  , "C12": { image: "black", rect: [[1,2], [1,3], 2, 3] }
+  , "C11": { image: "black", rect: [[1,2], [2,3], 2, 3] }
+  , "H13": { image: "red",   rect: [[0,2], [0,3], 2, 3] }
+  , "H12": { image: "red",   rect: [[0,2], [1,3], 2, 3] }
+  , "H11": { image: "red",   rect: [[0,2], [2,3], 2, 3] }
+  , "D13": { image: "red",   rect: [[1,2], [0,3], 2, 3] }
+  , "D12": { image: "red",   rect: [[1,2], [1,3], 2, 3] }
+  , "D11": { image: "red",   rect: [[1,2], [2,3], 2, 3] }
+  , "bg":  { image: "bg",    rect: [[0,1], [0,1], 1, 1] }
   }
   var notLoaded
   var suits = {
@@ -106,17 +106,17 @@ Image sizes and glyph positions are hard coded.
 
       for (key in faceImages) {
         data = faceImages[key]
-        // { image: "black", rect: [[0,2], [0,3], [1,2], [1,3]] }
-        // { image: "red",   rect: [[1,2], [2,3], [2,2], [3,3]] }
+        // { image: "black", rect: [[0,2], [0,3], 2, 3] }
+        // { image: "red",   rect: [[1,2], [2,3], 2, 3] }
         source = faceSource[data.image]
 
         rect = data.rect
         width = source.width
         height = source.height
         left = width * rect[0][0] / rect[0][1]
-        width /= rect[2][1]
+        width /= rect[2]
         top = height * rect[1][0] / rect[1][1]
-        height /= rect[3][1]
+        height /= rect[3]
 
         canvas = document.createElement('canvas')
         context = canvas.getContext('2d');
