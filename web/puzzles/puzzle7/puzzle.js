@@ -1,41 +1,57 @@
 ;(function puzzleLoaded(puzzle, lx){
 
   function Puzzle() {
-    this.name = "Random 17"
+    this.name = "34 Images"
   }
 
   Puzzle.prototype.initialize = function initialize() {
     var STORAGE_NAME = "random17"
-    var cues
-    var initialCount
+    var suits = ["S", "H", "D", "C"]
+    var cues = []
+    var exclude
     var options
     var game
 
     try {
-      cues = JSON.parse(localStorage[STORAGE_NAME])
+      exclude = JSON.parse(localStorage[STORAGE_NAME])
     } catch(error) {}
 
-    if (!cues) {
-      cues = getRandom17()
+    if (!exclude) {
+      exclude = getRandom17()
       localStorage[STORAGE_NAME] = JSON.stringify(cues)
     }
 
-    initialCount = 8
+    ;(function (){
+      var suitCount = suits.length
+       var suit
+        , number
+        , card
+      
+      for (suit = 0; suit < suitCount; suit += 1) {
+        for (number = 5; number < 14; number += 1) {
+          card = suits[suit] + number
+          if (exclude.indexOf(card) < 0){
+            cues.push(card)
+          }
+        }    
+      }
+    })()
+
     options = {
-      cues: cues.slice(0, initialCount)
-    , extras: cues.slice(initialCount)
-    , allottedTime: 3500
-    , scoreMethod: "addCardWhenReady"
+      cues: cues
+    , allottedTime: 3000
+    , scoreMethod: "updateScore"
+    , repeatAfter: 10
     }
-    game = lx.getInstance("CardMatch", options)
+    game = lx.getInstance("ImageMatch", options)
     game.initialize()
 
     function getRandom17() {
-      var random17 = []
-      var numbers = [5,6,7, 8,9,10, 11,12,13] // 9 items
-      var suits = ["S", "H", "D", "C"]
+      var random17 = []   
       var duplicate = 0
       var random
+
+      numbers = [5,6,7, 8,9,10, 11,12,13] // 9 items  
 
       numbers.push.apply(numbers, numbers) // 18 items
       random = Math.floor(Math.random() * numbers.length) // 0 - 17

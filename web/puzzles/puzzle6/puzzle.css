@@ -1,0 +1,87 @@
+div.cards img {
+  width: 30%;
+  display: inline-block;
+  margin-left: 2%;
+  margin-top: 2.5%;
+}
+
+div.cards img.overlay {
+  margin-bottom: 10.9%;
+  height: 30%;
+  border: 1px solid #fff;
+  box-sizing: border-box;
+}
+
+div.cards img.face {
+  position: absolute;
+  margin-left: -30%;
+}
+
+div.cards img.fadeIn {
+  opacity: 0.8;
+}
+
+div.cards p {
+  position: absolute;
+  left: 34%;
+  top: 1.5%;
+  top: 47%;
+  width: 30%;
+  text-align: center;
+  font-size: 5vmin;
+  margin: 0;
+  color: #fff;
+  /*background-color: #99f;*/
+
+  -moz-transition: color .5s ease-in-out;
+  -webkit-transition: color .5s ease-in-out;
+  transition: color .5s ease-in-out;
+}
+
+div.cards p.fadeIn {
+  color: #000;
+}
+
+div.progress {
+  position: absolute;
+  bottom: 0;
+  width: 0%;
+  height: 1%;
+  background-color: #900;
+}
+
+div.answers {
+  position: absolute;
+  bottom: 1%;
+}
+
+div.answers img{
+  display:inline-block;
+  width:24.5%;
+  margin-left: 0.5%;
+  cursor: pointer;
+}
+
+div.answers img.disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+img {
+  -webkit-transition: -webkit-transform 1s linear;
+     -moz-transition: -moz-transform 1s linear;
+       -o-transition: -o-transform 1s linear;
+          transition: transform 1s linear;
+}
+
+img.twist {
+  transform: rotateY(90deg);
+}
+
+img.turn {
+  transform: rotateY(-90deg);
+  -webkit-transition: none;
+   -moz-transition: none;
+     -o-transition: none;
+        transition: none;
+}

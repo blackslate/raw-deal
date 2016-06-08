@@ -1,110 +1,53 @@
 ;(function puzzleLoaded(puzzle, lx){
 
   function Puzzle() {
-    this.name = "34 Images"
+    this.name = "Sequence"
   }
 
   Puzzle.prototype.initialize = function initialize() {
-    var STORAGE_NAME = "random17"
-    var suits = ["S", "H", "D", "C"]
-    var numbers = [1,2,3,4]
-    var initial = getSet()
-    var cues
-    var options
-    var game
-
-    try {
-      cues = JSON.parse(localStorage[STORAGE_NAME])
-    } catch(error) {}
-
-    if (!cues) {
-      cues = getRandom17()
-      localStorage[STORAGE_NAME] = JSON.stringify(cues)
-    }
-    cues.push.apply(cues, initial)
-
-    options = {
-      cues: cues
-    , allottedTime: 3000
+    var options = {
+      cues: getCues()
+    , repeatAfter: 0
+    , allottedTime: 4000
     , scoreMethod: "updateScore"
-    , repeatAfter: 10
+    , clearCues: true
     }
-    game = lx.getInstance("ImageMatch", options)
+    var game = lx.getInstance("Sequence", options)
     game.initialize()
 
-    function getSet() {
-      var set = []
-      var suitCount = suits.length
-      var numberCount = numbers.length
-      var suit
-      var number
-      
-      for (suit = 0; suit < suitCount; suit += 1) {
-        for (number = 0; number < numberCount; number += 1) {
-          set.push(suits[suit] + numbers[number])
-        }    
-      }
+    function getCues() {
+      var cues = []
+      var cards = [
+      //   "S6", "S7", "S8", "S9", "S10", "S11", "S12", "S13"
+      // , "H6", "H7", "H8", "H9", "H10", "H11", "H12", "H13"
+      // , "D6", "D7", "D8", "D9", "D10", "D11", "D12", "D13"
+      // , "C6", "C7", "C8", "C9", "C10", "C11", "C12", "C13"
+      // ]
+        "S1", "S2", "S3", "S4", "S5"
+      , "H1", "H2", "H3", "H4", "H5"
+      , "D1", "D2", "D3", "D4", "D5"
+      , "C1", "C2", "C3", "C4", "C5"
+      ]
 
-      return set
-    }
-
-    function getRandom17() {
-      var random17 = []   
-      var duplicate = 0
-      var random
-
-      numbers = [5,6,7, 8,9,10, 11,12,13] // 9 items  
-
-      numbers.push.apply(numbers, numbers) // 18 items
-      random = Math.floor(Math.random() * numbers.length) // 0 - 17
-      numbers.splice(random, 1) // 17 items
-
-      suits.push.apply(suits, suits) // 8 items
-      suits.push.apply(suits, suits) // 16 items
-      random = Math.floor(Math.random() * suits.length) // 0 - 15
-      suits.push(suits[random]) // 17 items
-
-      lx.randomizeArray(suits)
-      lx.randomizeArray(numbers)
-
-      var total = suits.length
+      var total = 32
+      var count = 4
       var ii
-        , jj
-        , added
-        , card
-        , added
-        , suit
-        , number
+        , sequence
       
       for (ii = 0; ii < total; ii += 1) {
-        card = suits[ii] + numbers[ii]
-        added = lx.addItemToArray(card, random17)
-
-        if (!added) {
-          duplicate += 1
+        sequence = []
+         
+        for (jj = 0; jj < count; jj += 1) {
+          sequence.push(lx.randomItemFromArray(cards, 4))
         }
+
+        cues.push({ 
+          sequence: sequence
+        , stories: [] // TO DO
+        })
       }
 
-      if (duplicate) {
-        // Hack to fill up with first available cards
-        for (ii = 0; ii < numbers.length; ii += 1) {
-          for (jj = 0; jj < suits.length; jj += 1) {
-            card = suits[jj] + numbers[ii]
-
-            added = lx.addItemToArray(card, random17)
-
-            if (added) {
-              duplicate -= 1
-              if (!duplicate) {
-                ii = 9999
-                jj = 9999
-              }
-            }
-          }       
-        }
-      }
-
-      return random17
+      return cues
     }
   }
 

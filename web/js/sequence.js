@@ -67,6 +67,11 @@
         && typeof this[option] === "function") {
       this.scoreMethod = option
     }
+
+    option = options.clearCues
+    if (typeof option === "boolean") {
+      this.clearCues = option
+    }
   }
 
   Sequence.prototype.updateScore = function updateScore(result, showProgress) {
@@ -196,7 +201,9 @@
           })
           cards[ii].removeAttribute("style")
           answerDivs[ii].querySelector(".card").src = ""
-        }
+         }
+
+         answers.classList.remove("hide-cue")
       }
 
       function showSequence() {
@@ -222,6 +229,10 @@
 
       if (target.tagName.toUpperCase() !== "IMG") {
         return
+      }
+
+      if (that.clearCues) {
+        answers.classList.add("hide-cue")
       }
 
       index = cards.indexOf(target)
@@ -286,7 +297,7 @@
               }
             }
 
-            that.updateScore(score, showProgress)
+            that[that.scoreMethod](score, showProgress)
           }
         }
       }

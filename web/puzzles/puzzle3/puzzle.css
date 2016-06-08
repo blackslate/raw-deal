@@ -57,34 +57,9 @@ div.cards img.choose:nth-child(3) {
   transform: translate(-74%);
 }
 
-div.answers img.card {
-  position: absolute;
-  margin-left: -1px;
-  width: 25%;
-  top: 0%;
-  opacity: 0.8;
-}
-
 div.cards img.drag {
   z-index: 1;
 }
-
-/*
-div.cards img:nth-child(2) {
-  -webkit-transform: rotate(-4deg);
-  transform: rotate(-4deg);
-}
-
-div.cards img:nth-child(3) {
-  -webkit-transform: rotate(4deg);
-  transform: rotate(4deg);
-}
-
-div.cards img:nth-child(4) {
-  -webkit-transform: rotate(12deg);
-  transform: rotate(12deg);
-}
-*/
 
 div.progress {
   position: absolute;
@@ -120,14 +95,28 @@ div.answers p {
   text-align: center;
 }
 
-/*img.twist {
-  transform: rotateY(90deg);
+div.answers img.card {
+  position: absolute;
+  margin-left: -1px;
+  width: 25%;
+  top: 0%;
+  opacity: 0.8;
 }
 
-img.turn {
-  transform: rotateY(-90deg);
-  -webkit-transition: none;
-   -moz-transition: none;
-     -o-transition: none;
-        transition: none;
+div.answers img.card[src=''] {
+  opacity: 0;
+}
+
+div.answers.hide-cue img.image,
+div.answers.hide-cue p {
+  visibility: hidden;
+}
+
+div.answers.hide-cue img.card[src] {
+  opacity: 1;
+}
+
+/*div.answers:not(.hide-cue) img.card,
+div.answers.hide-cue img.card[src=''] {
+  opacity: 0;
 }*/
