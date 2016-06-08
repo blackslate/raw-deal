@@ -1,4 +1,4 @@
-;(function puzzleManager(window, document, lx){
+;(function levelManager(window, document, lx){
   var STORAGE_NAME = "goMap"
   var STATUS = { 
     locked: "locked"
@@ -9,17 +9,17 @@
   , archived: "archived" // may be synonym for completed
   }
 
-  var puzzle = lx.puzzle = {
+  var level = lx.level = {
     map: {}
   , hash: ""
-  , completed: puzzleCompleted
+  , completed: levelCompleted
   , unlock: unlockNextLevel
   }
 
-  var puzzleObject
+  var levelObject
 
-  var puzzle_css = document.querySelector(".puzzle_css")
-  var puzzle_js = document.querySelector(".puzzle_js")
+  var level_css = document.querySelector(".level_css")
+  var level_js = document.querySelector(".level_js")
   var $main = $("body>main")
   var isIPhone =navigator.userAgent.toLowerCase().indexOf("iphone")>-1
   var isIE = (navigator.userAgent.indexOf('MSIE') > -1
@@ -83,7 +83,7 @@
     }
   })()
 
-  // Check which puzzles the user has already solved
+  // Check which levels the user has already solved
   ;(function showPlayedGames(){
     if (!window.localStorage) {
       return
@@ -113,7 +113,7 @@
     }
   }
 
-  function puzzleCompleted(hash) {
+  function levelCompleted(hash) {
     updatePlayedStatus(hash, STATUS.completed)
 
     var index = levels.indexOf(hash) + 1
@@ -151,8 +151,8 @@
     }
 
     /**
-     * Extracts "puzzleName" from the link the user clicked, e.g.
-     *   "http://example.com/folder/index.html#puzzleName"
+     * Extracts "levelName" from the link the user clicked, e.g.
+     *   "http://example.com/folder/index.html#levelName"
      * @return {string or false}
      */
     var hash = getHashFrom(link)
@@ -160,33 +160,33 @@
     updatePlayedStatus(hash, STATUS.active, link)
  
     // CLEAN UP EXISTING PUZZLE IF THERE IS ONE
-    if (puzzleObject && puzzleObject.kill) {
-      puzzleObject.kill()
+    if (levelObject && levelObject.kill) {
+      levelObject.kill()
     }
-    $main.empty() // ensure no CSS conflict between puzzles
+    $main.empty() // ensure no CSS conflict between levels
 
     // PREPARE PATHs FOR NEW PUZZLE
-    var path = "puzzles/" + hash + "/puzzle."
+    var path = "levels/" + hash + "/level."
     
     // CHECK IF THIS PUZZLE HAS ALREADY BEEN LOADED
-    puzzleObject = puzzle.map[hash]
-    if (puzzleObject) {
-      // Set the CSS and HTML for this puzzle from cache
-      puzzle_css.setAttribute("href", path + "css")
-      $main.load( path + "html", reloadPuzzle )
+    levelObject = level.map[hash]
+    if (levelObject) {
+      // Set the CSS and HTML for this level from cache
+      level_css.setAttribute("href", path + "css")
+      $main.load( path + "html", reloadLevel )
     } else {
-      loadPuzzle()
+      loadLevel()
     }
 
-    function loadPuzzle() {
-      puzzle.hash = hash
+    function loadLevel() {
+      level.hash = hash
 
-      // GET AJAX AND CALL preparePuzzle() ON SUCCESS
+      // GET AJAX AND CALL prepareLevel() ON SUCCESS
       var remaining = 3
 
       $main.load( path+"html", loaded)
-      puzzle_css = swapFile(puzzle_css, "link", "href", path + "css")
-      puzzle_js = swapFile(puzzle_js, "script", "src", path + "js")
+      level_css = swapFile(level_css, "link", "href", path + "css")
+      level_js = swapFile(level_js, "script", "src", path + "js")
 
       function loaded (mainElement) {
         checkIfAllIsLoaded()
@@ -202,11 +202,11 @@
         if (!--remaining) {
           // HTML and CSS are ready, and the IIFE in the JS file will
           // have 
-          puzzleObject = puzzle.map[hash]
-          if (puzzleObject && puzzleObject.initialize) {
-            puzzleObject.initialize()
+          levelObject = level.map[hash]
+          if (levelObject && levelObject.initialize) {
+            levelObject.initialize()
           } else {
-            console.log("Unable to initialize puzzle " + hash)
+            console.log("Unable to initialize level " + hash)
           }
         }
       }
@@ -225,8 +225,8 @@
       }
     }
 
-    function reloadPuzzle() {
-      puzzleObject.initialize()
+    function reloadLevel() {
+      levelObject.initialize()
     }
   }
 
@@ -310,7 +310,7 @@
     }
   }
 
-  openGame(window.location.hash || "puzzle1")
+  openGame(window.location.hash || "level1")
 })(window, document, lexogram)
 
 /**
@@ -352,7 +352,7 @@
     main.style.width = minDimension + "px"
     main.style.height = minDimension + "px"
 
-    broadcastEvent("windowResized") // so that puzzles can use it
+    broadcastEvent("windowResized") // so that levels can use it
   }
 
   function broadcastEvent(eventName) {

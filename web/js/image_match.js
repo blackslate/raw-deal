@@ -1,4 +1,4 @@
-;(function createImageMatchPuzzle(lx){
+;(function createImageMatchGame(lx){
 
   lx.addConstructor(ImageMatch)
  
@@ -232,12 +232,12 @@
     }
 
     function levelComplete() {
-      lx.puzzle.completed(lx.puzzle.hash)
+      lx.level.completed(lx.level.hash)
     }
     
     function unlockNextLevel() {
       scoreToUnlock = 0
-      lx.puzzle.unlock()
+      lx.level.unlock()
     }
   }
 

@@ -1,10 +1,10 @@
-;(function puzzleLoaded(puzzle, lx){
+;(function levelLoaded(level, lx){
 
-  function Puzzle() {
+  function Level() {
     this.name = "Sequence"
   }
 
-  Puzzle.prototype.initialize = function initialize() {
+  Level.prototype.initialize = function initialize() {
     var options = {
       cues: getCues()
     , repeatAfter: 0
@@ -46,13 +46,13 @@
     }
   }
 
-  Puzzle.prototype.kill = function kill() {
-    // Clean up when puzzle is about to be replaced
+  Level.prototype.kill = function kill() {
+    // Clean up when level is about to be replaced
   }
 
-  if (typeof lx.puzzle.hash === "string") {
-    if (typeof lx.puzzle.map === "object") {
-      var object = lx.puzzle.map[lx.puzzle.hash] = new Puzzle()
+  if (typeof lx.level.hash === "string") {
+    if (typeof lx.level.map === "object") {
+      var object = lx.level.map[lx.level.hash] = new p()
     }
   }
-})(window.puzzle, lexogram) // <HARD-CODED global object>
+})(window.level, lexogram) // <HARD-CODED global object>

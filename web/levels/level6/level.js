@@ -1,41 +1,27 @@
-;(function puzzleLoaded(puzzle, lx){
+;(function levelLoaded(level, lx){
 
-  function Puzzle() {
+  function Level() {
     this.name = "34 Images"
   }
 
-  Puzzle.prototype.initialize = function initialize() {
+  Level.prototype.initialize = function initialize() {
     var STORAGE_NAME = "random17"
     var suits = ["S", "H", "D", "C"]
-    var cues = []
-    var exclude
+    var numbers = [1,2,3,4]
+    var initial = getSet()
+    var cues
     var options
     var game
 
     try {
-      exclude = JSON.parse(localStorage[STORAGE_NAME])
+      cues = JSON.parse(localStorage[STORAGE_NAME])
     } catch(error) {}
 
-    if (!exclude) {
-      exclude = getRandom17()
+    if (!cues) {
+      cues = getRandom17()
       localStorage[STORAGE_NAME] = JSON.stringify(cues)
     }
-
-    ;(function (){
-      var suitCount = suits.length
-       var suit
-        , number
-        , card
-      
-      for (suit = 0; suit < suitCount; suit += 1) {
-        for (number = 5; number < 14; number += 1) {
-          card = suits[suit] + number
-          if (exclude.indexOf(card) < 0){
-            cues.push(card)
-          }
-        }    
-      }
-    })()
+    cues.push.apply(cues, initial)
 
     options = {
       cues: cues
@@ -45,6 +31,22 @@
     }
     game = lx.getInstance("ImageMatch", options)
     game.initialize()
+
+    function getSet() {
+      var set = []
+      var suitCount = suits.length
+      var numberCount = numbers.length
+      var suit
+      var number
+      
+      for (suit = 0; suit < suitCount; suit += 1) {
+        for (number = 0; number < numberCount; number += 1) {
+          set.push(suits[suit] + numbers[number])
+        }    
+      }
+
+      return set
+    }
 
     function getRandom17() {
       var random17 = []   
@@ -106,13 +108,13 @@
     }
   }
 
-  Puzzle.prototype.kill = function kill() {
-    // Clean up when puzzle is about to be replaced
+  Level.prototype.kill = function kill() {
+    // Clean up when level is about to be replaced
   }
 
-  if (typeof lx.puzzle.hash === "string") {
-    if (typeof lx.puzzle.map === "object") {
-      var object = lx.puzzle.map[lx.puzzle.hash] = new Puzzle()
+  if (typeof lx.level.hash === "string") {
+    if (typeof lx.level.map === "object") {
+      var object = lx.level.map[lx.level.hash] = new Level()
     }
   }
-})(window.puzzle, lexogram) // <HARD-CODED global object>
+})(window.level, lexogram) // <HARD-CODED global object>
