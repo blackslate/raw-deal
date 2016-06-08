@@ -1,71 +1,70 @@
 /* Same rules for levels 3, 4 and 8 */
 
 img {
-  -webkit-transition: -webkit-transform 0.5s;
-     -moz-transition: -moz-transform 0.5s;
-       -o-transition: -o-transform 0.5s;
-          transition: transform 0.5s;
+  transition: left 0.5s;
+}
+
+div.cards {
+  position: absolute;
+  margin-left: 37.5%;
+  margin-top: 5%;
+  width: 25%;
 }
 
 div.cards img{
-  margin-left: 37.5%;
-  margin-top: 5%;
-  cursor: pointer;
-
-  -ms-transform-origin: 5% 95%; /* IE 9 */
-  -webkit-transform-origin: 5% 95%; /* Chrome, Safari, Opera */
-  transform-origin: 5% 95%;
+   cursor: pointer;
 }
 
 div.cards img,
 div.answers img.card {
   position: absolute;
-  width: 25%;
-
-  -webkit-filter: drop-shadow(0px 0px 1px #966);
+  width: 100%;
+  top: 0;
+ /* -webkit-filter: drop-shadow(0px 0px 1px #966);*/
   -moz-filter: drop-shadow(0px 0px 1px #966);
   -ms-filter: drop-shadow(0px 0px 1px #966);
   -o-filter: drop-shadow(0px 0px 1px #966);
   filter: drop-shadow(0px 0px 1px #966);
 }
 
+div.answers img.card {
+  /* Apply drop shadow in Safari only when in final position */
+ -webkit-filter: drop-shadow(0px 0px 1px #966);
+}
+
 div.cards img:nth-child(1) {
-  -webkit-transform: translate(-27%);
-  transform: translate(-27%);
+  left: -30%;
 }
 
 div.cards img:nth-child(2) {
-  -webkit-transform: translate(-9%);
-  transform: translate(-9%);
+  left: -10%;
 }
 
 div.cards img:nth-child(3) {
-  -webkit-transform: translate(9%);
-  transform: translate(9%);
+  left: 10%;
 }
 
 div.cards img:nth-child(4) {
-  -webkit-transform: translate(27%);
-  transform: translate(27%);
+  left: 30%;
 }
 
 div.cards img.choose:nth-child(1) {
-  -webkit-transform: translate(-110%);
-  transform: translate(-110%);
-}
+  left: -110%;}
 
 div.cards img.choose:nth-child(2) {
-  -webkit-transform: translate(-92%);
-  transform: translate(-92%);
+  left: -92%;
 }
 
 div.cards img.choose:nth-child(3) {
-  -webkit-transform: translate(-74%);
-  transform: translate(-74%);
+  left: -74%;
 }
 
-div.cards img.drag {
+div.cards img.top {
   z-index: 1;
+}
+
+div.cards img.dragging {
+  transition: left 0s;
 }
 
 div.progress {
@@ -86,7 +85,7 @@ div.answers div{
   display:inline-block;
   width:25%;
   height:100%;
-  border: 0.5px solid #fff;
+  border: 1px solid #fff;
   box-sizing: border-box;
 }
 
@@ -106,6 +105,7 @@ div.answers img.card {
   margin-left: -1px;
   top: 0%;
   opacity: 0.8;
+  width: 25%;
 }
 
 div.answers img.card[src=''] {

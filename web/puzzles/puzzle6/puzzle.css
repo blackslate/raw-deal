@@ -15,6 +15,11 @@ div.cards img.overlay {
 div.cards img.face {
   position: absolute;
   margin-left: -30%;
+
+  opacity: 0;
+  -moz-transition: opacity .5s ease-in-out;
+  -webkit-transition: opacity .5s ease-in-out;
+  transition: opacity .5s ease-in-out;
 }
 
 div.cards img.fadeIn {
@@ -31,7 +36,6 @@ div.cards p {
   font-size: 5vmin;
   margin: 0;
   color: #fff;
-  /*background-color: #99f;*/
 
   -moz-transition: color .5s ease-in-out;
   -webkit-transition: color .5s ease-in-out;
@@ -65,23 +69,4 @@ div.answers img{
 div.answers img.disabled {
   opacity: 0.25;
   cursor: default;
-}
-
-img {
-  -webkit-transition: -webkit-transform 1s linear;
-     -moz-transition: -moz-transform 1s linear;
-       -o-transition: -o-transform 1s linear;
-          transition: transform 1s linear;
-}
-
-img.twist {
-  transform: rotateY(90deg);
-}
-
-img.turn {
-  transform: rotateY(-90deg);
-  -webkit-transition: none;
-   -moz-transition: none;
-     -o-transition: none;
-        transition: none;
 }

@@ -226,6 +226,7 @@
       var index
         , startX
         , startY
+        , offsetX
 
       if (target.tagName.toUpperCase() !== "IMG") {
         return
@@ -240,10 +241,12 @@
       startY = startX.y
       startX = startX.x
 
+      offsetX = getOffsetX(target)
+
       if (unplaced.indexOf(index) === unplaced.length - 1) {
         body.onmousemove = body.ontouchmove = drag
         body.onmouseup = body.ontouchend = stopDrag
-        target.classList.add("drag")
+        target.classList.add("top")
 
       } else {         
         target.classList.add("choose")
@@ -252,19 +255,29 @@
 
         timeOut = setTimeout(function dragNow() {
           target.classList.remove("choose")
-          target.classList.add("drag")
+          target.classList.add("top")
 
           body.onmousemove = body.ontouchmove = drag
           body.onmouseup = body.ontouchend = stopDrag
         }, 500)
-      } 
+      }
+
+      function getOffsetX(target) {
+        var style = window.getComputedStyle(target)
+        var left = style.getPropertyValue("left") // "-XX%"
+        var width = target.getBoundingClientRect().width
+        return parseFloat(left) * width / 100
+      }
 
       function drag(event) {
         var dragLoc = lx.getClientLoc(event)
         var dragX = dragLoc.x - startX
         var dragY = dragLoc.y - startY
-        target.style.left = dragX + "px"
+        target.style.left = (dragX + offsetX) + "px"
         target.style.top = dragY + "px"
+
+        console.log([dragX, (dragX + offsetX) + "px", target.style.left, dragY, target.style.top])
+        target.classList.add("dragging")
       }
 
       function cancelDrag(event) {
