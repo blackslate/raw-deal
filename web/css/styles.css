@@ -1,4 +1,3 @@
-
 html, body {
 margin: 0;
 height: 100%;
@@ -39,6 +38,7 @@ position: relative;
 background-color: #000;
 color: #fff;
 height: 100%;
+overflow: hidden;
 }
 
 nav ul {

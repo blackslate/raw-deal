@@ -168,6 +168,8 @@
         array[current] = array[random];
         array[random] = swap;
       }
+
+      return array
     }
 
   , randomItemFromArray: function randomItemFromArray(
@@ -199,6 +201,66 @@
       }
 
       return false
+    }
+
+  , removeItemFromArray: function removeItemFromArray(item, array){
+      var index = array.indexOf(item)
+      if (index > -1) {
+        return array.splice(index, 1)[0]
+      }
+
+      return false
+    }
+
+  , getClientLoc: function getClientLoc(event) {
+      if (!this.clientLoc) {
+        this.clientLoc = { x: 0, y: 0 }
+      }
+
+      if (isNaN(event.clientX)) {
+        if (event.targetTouches) {
+          touch = event.targetTouches[0]
+          if (touch) {   
+            this.clientLoc.x = touch.clientX
+            this.clientLoc.y = touch.clientY
+          }
+        }
+      } else {          
+        this.clientLoc.x = event.clientX
+        this.clientLoc.y = event.clientY
+      }
+
+      return this.clientLoc
+    }
+
+  , overElement: function overElement(clientLoc, target) {
+      var result = false
+      var body = document.body
+      var x = clientLoc.x
+      var y = clientLoc.y
+      var element = document.elementFromPoint(x, y)
+      var elements = []
+
+      while (element !== target && element !== body) {
+        elements.push({
+          element: element
+        , visibility: element.style.visibility
+        })
+        // visible, hidden, collapse, initial, inherit
+
+        element.style.visibility = "hidden"
+        element = document.elementFromPoint(x, y)
+      }
+
+      if (element === target) {
+        result = true
+      }
+
+      while (elementData = elements.pop()) {
+        elementData.element.style.visibility = elementData.visibility
+      }
+
+      return result
     }
   }
   

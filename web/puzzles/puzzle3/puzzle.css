@@ -1,13 +1,90 @@
+img {
+  -webkit-transition: -webkit-transform 0.5s;
+     -moz-transition: -moz-transform 0.5s;
+       -o-transition: -o-transform 0.5s;
+          transition: transform 0.5s;
+}
 div.cards img {
   position: absolute;
   width: 25%;
   margin-left: 37.5%;
-  margin-top: 2.5%;
+  margin-top: 5%;
+  cursor: pointer;
+
+  -webkit-filter: drop-shadow(0px 0px 1px #966);
+  -moz-filter: drop-shadow(0px 0px 1px #966);
+  -ms-filter: drop-shadow(0px 0px 1px #966);
+  -o-filter: drop-shadow(0px 0px 1px #966);
+  filter: drop-shadow(0px 0px 1px #966);
+
+  -ms-transform-origin: 5% 95%; /* IE 9 */
+  -webkit-transform-origin: 5% 95%; /* Chrome, Safari, Opera */
+  transform-origin: 5% 95%;
 }
 
-div.cards img.face {
-  opacity: 0.5;
+div.cards img:nth-child(1) {
+  -webkit-transform: translate(-27%);
+  transform: translate(-27%);
 }
+
+div.cards img:nth-child(2) {
+  -webkit-transform: translate(-9%);
+  transform: translate(-9%);
+}
+
+div.cards img:nth-child(3) {
+  -webkit-transform: translate(9%);
+  transform: translate(9%);
+}
+
+div.cards img:nth-child(4) {
+  -webkit-transform: translate(27%);
+  transform: translate(27%);
+}
+
+div.cards img.choose:nth-child(1) {
+  -webkit-transform: translate(-110%);
+  transform: translate(-110%);
+}
+
+div.cards img.choose:nth-child(2) {
+  -webkit-transform: translate(-92%);
+  transform: translate(-92%);
+}
+
+div.cards img.choose:nth-child(3) {
+  -webkit-transform: translate(-74%);
+  transform: translate(-74%);
+}
+
+div.answers img.card {
+  position: absolute;
+  margin-left: -1px;
+  width: 25%;
+  top: 0%;
+  opacity: 0.8;
+}
+
+div.cards img.drag {
+  z-index: 1;
+}
+
+/*
+div.cards img:nth-child(2) {
+  -webkit-transform: rotate(-4deg);
+  transform: rotate(-4deg);
+}
+
+div.cards img:nth-child(3) {
+  -webkit-transform: rotate(4deg);
+  transform: rotate(4deg);
+}
+
+div.cards img:nth-child(4) {
+  -webkit-transform: rotate(12deg);
+  transform: rotate(12deg);
+}
+*/
 
 div.progress {
   position: absolute;
@@ -29,7 +106,6 @@ div.answers div{
   height:100%;
   border: 0.5px solid #fff;
   box-sizing: border-box;
-  cursor: pointer;
 }
 
 div.answers img.image {
@@ -43,3 +119,15 @@ div.answers p {
   font-size: 6vmin;
   text-align: center;
 }
+
+/*img.twist {
+  transform: rotateY(90deg);
+}
+
+img.turn {
+  transform: rotateY(-90deg);
+  -webkit-transition: none;
+   -moz-transition: none;
+     -o-transition: none;
+        transition: none;
+}*/

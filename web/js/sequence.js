@@ -21,7 +21,7 @@
     this.setOptions(options)
 
     this.startTime = 0
-    this.attempts = [1,1,1,1,1, 1,1,1,1,1]
+    this.attempts = [0,0,0,0,0, 0,0,0,0,0]
     this.attemptCount = 20
     this.total = this.cues.length
   }
@@ -98,20 +98,23 @@
 
   Sequence.prototype.initialize = function initialize() {
     var that = this
-    var cardback = document.querySelector("img.back")
-    var cardface = document.querySelector("img.face")
+    var body = document.body
+    var cardDiv = document.querySelector(".cards")
+    var cards = [].slice.call(cardDiv.querySelectorAll("img"))
     var progress = document.querySelector(".progress")
     var answers = document.querySelector(".answers")
     var answerDivs = [].slice.call(answers.querySelectorAll("div"))
     var path = "img/images/"
     var remaining = 2
-    var distractors = []
+    var delay = 2000
+    var timeOut = 0
     var imageLUT = {}
     var scoreToUnlock = 80
     var imageMap
-      , imageNames
       , data
       , sequence
+      , disorder
+      , unplaced
       , stories
       , story
 
@@ -155,7 +158,6 @@
           imageLUT[result[2]] = this // XX
 
           if (!(nameCount -= 1)) {
-            cardback.src = lx.createCard().src
             callback()
           }
         }
@@ -164,8 +166,6 @@
 
     function start(event) {
       if (!(--remaining)) {
-        cardback.src = lx.createCard().src
-        imageNames = Object.keys(imageLUT)
         newSequence()
       }
     }
@@ -175,11 +175,29 @@
       sequence = data.sequence
       stories = data.stories
 
-      cardface = lx.createCard({card: sequence[0]})
+      showCards()
       showSequence()
 
-      answers.onmouseup = answers.ontouchend = answer
+      cardDiv.onmousedown = cardDiv.ontouchstart = startDrag
       that.startTime = + new Date()
+
+      function showCards() {
+        var total = cards.length
+        var ii
+          , card
+        
+        unplaced = [0,1,2,3]
+        disorder = lx.randomizeArray(unplaced.slice(0))
+
+        for (ii = 0; ii < total; ii += 1) {
+          lx.createCard({
+            card: sequence[disorder[ii]]
+          , image: cards[ii]
+          })
+          cards[ii].removeAttribute("style")
+          answerDivs[ii].querySelector(".card").src = ""
+        }
+      }
 
       function showSequence() {
         var total = sequence.length
@@ -196,21 +214,95 @@
       }
     }
 
-    function answer(event){
-      var target = event.target.tagName.toUpperCase() === "DIV"
-                 ? event.target
-                 : event.target.parentNode
-      var index = answerDivs.indexOf(target)
-     
-    }
+    function startDrag(event){
+      var target = event.target
+      var index
+        , startX
+        , startY
+
+      if (target.tagName.toUpperCase() !== "IMG") {
+        return
+      }
+
+      index = cards.indexOf(target)
+      startX = lx.getClientLoc(event)
+      startY = startX.y
+      startX = startX.x
+
+      if (unplaced.indexOf(index) === unplaced.length - 1) {
+        body.onmousemove = body.ontouchmove = drag
+        body.onmouseup = body.ontouchend = stopDrag
+        target.classList.add("drag")
+
+      } else {         
+        target.classList.add("choose")
+
+        body.onmouseup = body.ontouchend = cancelDrag
+
+        timeOut = setTimeout(function dragNow() {
+          target.classList.remove("choose")
+          target.classList.add("drag")
+
+          body.onmousemove = body.ontouchmove = drag
+          body.onmouseup = body.ontouchend = stopDrag
+        }, 500)
+      } 
+
+      function drag(event) {
+        var dragLoc = lx.getClientLoc(event)
+        var dragX = dragLoc.x - startX
+        var dragY = dragLoc.y - startY
+        target.style.left = dragX + "px"
+        target.style.top = dragY + "px"
+      }
+
+      function cancelDrag(event) {
+        clearTimeout(timeOut)
+        body.onmouseup = body.ontouchend = null
+        target.removeAttribute("style")
+        target.className = ""
+      }
+
+      function stopDrag(event) {
+        body.onmousemove = body.ontouchmove = body.onmouseup = body.ontouchend = null
+        target.removeAttribute("style")
+        target.className = ""
+
+        var dropLoc = lx.getClientLoc(event)
+        var total = answerDivs.length
+        var score = 0
+        var ii
+        
+        for (ii = 0; ii < total; ii += 1) {
+          if (lx.overElement(dropLoc, answerDivs[ii])) {
+            if (disorder[index] === ii) {
+              dropOnTarget(answerDivs[ii])
+              score = 1
+              that.startTime = + new Date()
+
+              lx.removeItemFromArray(index, unplaced)
+              if (!unplaced.length) {
+                timeOut = setTimeout(newSequence, delay)
+              }
+            }
+
+            that.updateScore(score, showProgress)
+          }
+        }
+      }
+
+      function dropOnTarget(answerDiv) {
+        answerDiv.querySelector(".card").src = target.src
+        target.style.display = "none"
+      }
+    }    
 
     function showProgress(correct) {
-      //correct = correct * seenImages.length / that.total
-      correct = 50
       progress.style.width = correct + "%"
 
-      if (correct === 100) {
-        levelComplete()
+      if (correct === 100 && unplaced.length === 0) {
+        clearTimeout(timeOut)
+        setTimeout(levelComplete, delay)
       } else if (scoreToUnlock && correct > scoreToUnlock) {
         unlockNextLevel()
       }

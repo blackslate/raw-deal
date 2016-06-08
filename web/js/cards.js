@@ -399,4 +399,23 @@ Image sizes and glyph positions are hard coded.
 
     return image
   }
+
+  lx.turnCard = function turnCard(img, card) {
+    var duration = 1000
+    var src = lx.createCard({ card: card }).src
+    lx.createCard({ image: img }) // set img to background
+    img.classList.add("twist")
+    setTimeout(turn, duration)
+    
+    function turn() {
+      img.src = src
+      img.classList.remove("twist")
+      img.classList.add("turn")
+      setTimeout(function deal() {
+        img.classList.remove("turn")
+      }, 1)
+    }
+    
+    
+  }
 })(lexogram)
