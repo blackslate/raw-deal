@@ -1,25 +1,32 @@
+/* Same rules for levels 3, 4 and 8 */
+
 img {
   -webkit-transition: -webkit-transform 0.5s;
      -moz-transition: -moz-transform 0.5s;
        -o-transition: -o-transform 0.5s;
           transition: transform 0.5s;
 }
-div.cards img {
-  position: absolute;
-  width: 25%;
+
+div.cards img{
   margin-left: 37.5%;
   margin-top: 5%;
   cursor: pointer;
+
+  -ms-transform-origin: 5% 95%; /* IE 9 */
+  -webkit-transform-origin: 5% 95%; /* Chrome, Safari, Opera */
+  transform-origin: 5% 95%;
+}
+
+div.cards img,
+div.answers img.card {
+  position: absolute;
+  width: 25%;
 
   -webkit-filter: drop-shadow(0px 0px 1px #966);
   -moz-filter: drop-shadow(0px 0px 1px #966);
   -ms-filter: drop-shadow(0px 0px 1px #966);
   -o-filter: drop-shadow(0px 0px 1px #966);
   filter: drop-shadow(0px 0px 1px #966);
-
-  -ms-transform-origin: 5% 95%; /* IE 9 */
-  -webkit-transform-origin: 5% 95%; /* Chrome, Safari, Opera */
-  transform-origin: 5% 95%;
 }
 
 div.cards img:nth-child(1) {
@@ -96,9 +103,7 @@ div.answers p {
 }
 
 div.answers img.card {
-  position: absolute;
   margin-left: -1px;
-  width: 25%;
   top: 0%;
   opacity: 0.8;
 }
