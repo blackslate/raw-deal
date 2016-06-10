@@ -5,9 +5,13 @@ div.cards img {
   margin-top: 2.5%;
 }
 
-div.cards img.overlay[src] {
-  margin-bottom: 10.9%;
+div.cards img.overlay[src],
+div.cards img.back {
+  margin-top: 13%;
   height: 30%;
+}
+
+div.cards img.overlay[src] {
   border: 1px solid #fff;
   box-sizing: border-box;
 }

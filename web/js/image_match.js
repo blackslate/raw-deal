@@ -143,8 +143,7 @@
           names.splice(names.indexOf(result[1]), 1) // XX.xxx
           imageLUT[result[2]] = this // XX
 
-          if (!(nameCount -= 1)) {
-            cardback.src = lx.createCard().src
+          if (!(nameCount -= 1)) {           
             callback()
           }
         }
@@ -153,7 +152,7 @@
 
     function start(event) {
       if (!(--remaining)) {
-        cardback.src = lx.createCard().src
+        cardback.src = lx.createCard({ suit: "square" }).src
         imageNames = Object.keys(imageLUT)
         newCard()
       }

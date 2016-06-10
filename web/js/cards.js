@@ -49,9 +49,6 @@ Image sizes and glyph positions are hard coded.
     width: 350
   , height: 600
   }
-  var canvas = document.createElement('canvas')
-  var context = canvas.getContext('2d');
-
   ;(function preloadFacecards(){
     var regex = new RegExp("\\/(\\w+)(\\.png|\\.gif)")
     var timeout = setTimeout(downloadTimeout, 5000)
@@ -81,13 +78,6 @@ Image sizes and glyph positions are hard coded.
         clearTimeout(timeout)
         timeout = false
         createCroppedImages()
-        
-        canvas.width = dimensions.width     
-        canvas.height = dimensions.height
-
-        // if (typeof allImagesLoaded == 'function') { 
-        //   allImagesLoaded(); 
-        // }
       }
     }
 
@@ -132,8 +122,6 @@ Image sizes and glyph positions are hard coded.
         image.src = canvas.toDataURL()
         faceImages[key] = image
       }
-
-
     }
 
     function downloadError(event) {
@@ -161,17 +149,25 @@ Image sizes and glyph positions are hard coded.
     // Validate input
     typeof map !== "object" ? map = {} : null
 
+    var canvas = document.createElement('canvas')
+    var context = canvas.getContext('2d')
+
     var card = map.card || ""
     var suit = map.suit || suitLUT[card.charAt(0).toUpperCase()]
     var number = map.number || parseInt(card.substring(1), 10)
     var image = map.image
+
+    canvas.width = dimensions.width
+    canvas.height = dimensions.height 
 
     if (suit) {
       card = suit.charAt(0).toUpperCase() + number
     }
 
     if (Object.keys(suits).indexOf(suit) < 0) {
-      suit = (card === "blank") ? suit : "back"
+      suit = (["blank", "square"].indexOf(suit) < 0)
+           ? "back"
+           : suit
     } else if (lx.isNumber(number)) {
       number = parseInt(number)
       number = Math.max(1, Math.min(number, 13))
@@ -196,9 +192,16 @@ Image sizes and glyph positions are hard coded.
     var bottom = height - radius
     var colour
 
+    canvas.width = dimensions.width
+    canvas.height = dimensions.height   
+
     switch (suit) {
       case "back":
         createBack()
+        break
+
+      case "square":
+        createSquareBack()
         break
 
       case "blank":
@@ -218,6 +221,7 @@ Image sizes and glyph positions are hard coded.
       context.arc(right, bottom, radius, 0, 0.5*Math.PI, false)
       context.lineTo(radius, height)
       context.arc(radius, bottom, radius, 0.5*Math.PI, Math.PI, false)
+      context.lineTo(0, radius)
     }
 
     function createBack() {
@@ -226,6 +230,30 @@ Image sizes and glyph positions are hard coded.
       context.drawImage(faceImages.bg, 0, 0, width, height)
 
       createShape()
+      context.closePath()
+      context.lineWidth = radius / 2
+      context.strokeStyle = cardColours.border
+      context.stroke()
+    }
+
+    function createSquareBack() {
+      canvas = document.createElement('canvas')
+      context = canvas.getContext('2d')
+      canvas.width = dimensions.width
+      canvas.height = dimensions.width
+      // back
+      context.beginPath()
+      context.lineTo(width, 0)
+      context.lineTo(width, width)
+      context.lineTo(0, width)
+      context.lineTo(0, 0)
+      context.clip()
+      context.drawImage(faceImages.bg, 0, 0, width, width)
+      // border
+      context.lineTo(width, 0)
+      context.lineTo(width, width)
+      context.lineTo(0, width)
+      context.lineTo(0, 0)
       context.closePath()
       context.lineWidth = radius / 2
       context.strokeStyle = cardColours.border
