@@ -38,9 +38,12 @@ div.answers {
 div.answers div{
   display:inline-block;
   width:25%;
+  cursor: pointer;
+}
+
+div.answers div.border{
   border: 0.5px solid #fff;
   box-sizing: border-box;
-  cursor: pointer;
 }
 
 div.answers div.disabled {

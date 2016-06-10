@@ -5,7 +5,7 @@ div.cards img {
   margin-top: 2.5%;
 }
 
-div.cards img.overlay {
+div.cards img.overlay[src] {
   margin-bottom: 10.9%;
   height: 30%;
   border: 1px solid #fff;

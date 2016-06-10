@@ -81,10 +81,15 @@ div.answers {
   height: 42.857%;
 }
 
-div.answers div{
+div.answers div {
   display:inline-block;
   width:25%;
   height:100%;
+  /*border: 1px solid #fff;
+  box-sizing: border-box;*/
+}
+
+div.answers div.border {
   border: 1px solid #fff;
   box-sizing: border-box;
 }

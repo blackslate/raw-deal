@@ -5,7 +5,7 @@ div.cards img {
   margin-top: 7.5%;
 }
 
-div.cards img.overlay {
+div.cards img.overlay[src] {
   position: absolute;
   margin-left: -30%;
   margin-top: 18.2%;
@@ -38,9 +38,12 @@ div.answers {
 div.answers div{
   display:inline-block;
   width:25%;
+  cursor: pointer;
+}
+
+div.answers div.border{
   border: 0.5px solid #fff;
   box-sizing: border-box;
-  cursor: pointer;
 }
 
 div.answers div.disabled {

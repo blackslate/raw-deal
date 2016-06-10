@@ -190,6 +190,7 @@
         var total = cards.length
         var ii
           , card
+          , div
         
         unplaced = [0,1,2,3]
         disorder = lx.randomizeArray(unplaced.slice(0))
@@ -200,7 +201,9 @@
           , image: cards[ii]
           })
           cards[ii].removeAttribute("style")
-          answerDivs[ii].querySelector(".card").src = ""
+          div = answerDivs[ii]
+          div.classList.add("border")
+          div.querySelector(".card").src = ""
          }
 
          answers.classList.remove("hide-cue")

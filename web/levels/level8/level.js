@@ -52,7 +52,7 @@
 
   if (typeof lx.level.hash === "string") {
     if (typeof lx.level.map === "object") {
-      var object = lx.level.map[lx.level.hash] = new p()
+      var object = lx.level.map[lx.level.hash] = new Level()
     }
   }
 })(window.level, lexogram) // <HARD-CODED global object>

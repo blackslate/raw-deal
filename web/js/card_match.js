@@ -204,6 +204,7 @@
         for (ii = 0; ii < total; ii += 1) {
           div = answerDivs[ii]
           key = distractors[ii]
+          div.classList.add("border")
           div.classList.remove("disabled")
           div.querySelector("img").src = imageLUT[key].src
           div.querySelector("p").innerHTML = imageMap[key]
