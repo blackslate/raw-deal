@@ -18,7 +18,7 @@ div.cards img.overlay[src] {
   box-sizing: border-box;
 }
 
-div.cards img.fadeIn {
+div.cards img.overlay.fadeIn {
   opacity: 0.9;
 }
 

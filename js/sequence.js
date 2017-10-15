@@ -279,7 +279,7 @@
         target.style.left = (dragX + offsetX) + "px"
         target.style.top = dragY + "px"
 
-        console.log([dragX, (dragX + offsetX) + "px", target.style.left, dragY, target.style.top])
+        //console.log([dragX, (dragX + offsetX) + "px", target.style.left, dragY, target.style.top])
         target.classList.add("dragging")
       }
 

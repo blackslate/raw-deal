@@ -230,7 +230,7 @@
     }
 
     function showProgress(correct) {
-      console.log(seenImages.length, correct, correct * seenImages.length / that.total)
+      //console.log(seenImages.length, correct, correct * seenImages.length / that.total)
       correct = correct * seenImages.length / that.total
       progress.style.width = correct + "%"
 

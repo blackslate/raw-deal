@@ -415,7 +415,7 @@ Image sizes and glyph positions are hard coded.
 
       createCorners()
       
-      console.log(card)
+     //console.log(card)
 
       image = faceImages[card]
       context.fillStyle = colour
