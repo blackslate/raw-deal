@@ -260,6 +260,10 @@
       playedMap[hash] = newStatus
     }
 
+    if (newStatus === STATUS.active) {
+      disactivateOthers()
+    }
+
     localStorage[STORAGE_NAME] = JSON.stringify(playedMap)
     link.className = newStatus
 
@@ -271,6 +275,29 @@
     }
 
     return newStatus
+
+    function disactivateOthers() {
+      var levels = Object.keys(playedMap)
+
+      levels.forEach(disactivate)
+
+      function disactivate(level) {
+        var status
+          , link
+
+        if (level === hash) {
+          // Leave this level active
+        } else {
+          if (playedMap[level] = STATUS.active) {
+            // Update localStorage data
+            playedMap[level] = STATUS.unlocked
+            // Update interface
+            link = getLinkFrom(level)
+            link.classList.remove(STATUS.active)
+          }
+        }
+      }
+    }
   }
 
   function getHashFrom(link) {
