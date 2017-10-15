@@ -107,9 +107,13 @@
 
   // Public methods
   function unlockNextLevel() {
-    var hash = locked.shift()
+    var hash = locked[0]
+
     if (hash) {
-      updatePlayedStatus(hash, STATUS.unlocked)
+      if (compareIfNextLevel(level.hash, hash)) {
+        locked.shift()
+        updatePlayedStatus(hash, STATUS.unlocked)
+      }
     }
   }
 
@@ -335,6 +339,27 @@
     if (link) {
       showGame({ target: link }, true ) // even if it is locked
     }
+  }
+
+  function compareIfNextLevel(level1, level2) {
+    var regex = /\d+$/
+    var isNextLevel = false
+
+    level1 = level1.match(regex)
+    level2 = level2.match(regex)
+
+    if (level1) {
+      // ["X", index: <integer>, input: "levelX"]] - where X is number
+      level1 = parseInt(level1[0], 10)
+
+      if (level2) {
+        level2 = parseInt(level2[0], 10)
+
+        isNextLevel = (level2 === level1 + 1)
+      }
+    }
+
+    return isNextLevel
   }
 
   openGame(window.location.hash || "level1")
