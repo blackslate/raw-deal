@@ -1,5 +1,5 @@
 ;(function levelManager(window, document, lx){
-  var STORAGE_NAME = "goMap"
+  var STORAGE_NAME = "goRaw"
   var STATUS = { 
     locked: "locked"
   , active: "active"
